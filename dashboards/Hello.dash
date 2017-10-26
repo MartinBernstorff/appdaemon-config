@@ -1,0 +1,59 @@
+#
+# Main arguments, all optional
+#
+title: Main panel
+widget_dimensions: [170, 170]
+widget_margins: [7, 7]
+columns: 2
+
+normal:
+    widget_type: mode
+    mode: Normal
+    entity: input_select.context
+    script: script.normal
+    icon_on: mdi-weather-sunny
+    icon_off: mdi-weather-sunny
+
+cozy:
+    widget_type: mode
+    mode: Cozy
+    entity: input_select.context
+    script: script.cozy
+    icon_on: mdi-coffee
+    icon_off: mdi-coffee
+
+pre-sleep:
+    widget_type: mode
+    mode: Pre-sleep
+    entity: input_select.context
+    script: script.pre_sleep
+    icon_on: mdi-weather-night
+    icon_off: mdi-weather-night
+
+movie_mode:
+    widget_type: mode
+    mode: Movie-mode
+    entity: input_select.context
+    script: script.movie_mode
+    icon_on: mdi-movie
+    icon_off: mdi-movie
+
+away:
+    widget_type: mode
+    mode: Away
+    entity: input_select.context
+    script: script.away
+    icon_on: mdi-lock
+    icon_off: mdi-lock
+
+DMI:
+    widget_type: iframe
+    refresh: 60
+    img_list:
+      - http://servlet.dmi.dk/byvejr/servlet/byvejr_dag1?by=8240&mode=long&eps=true
+
+layout:
+    - DMI(2x1)
+    - normal, pre-sleep
+    - cozy, movie_mode
+    - away

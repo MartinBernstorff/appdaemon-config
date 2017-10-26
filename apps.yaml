@@ -1,0 +1,125 @@
+#############
+# Circadian #
+#############
+context_controller:
+  module: context_controller
+  class: ContextController
+
+circadian_gen:
+  module: circadiangen
+  class: CircadianGen
+
+circadian_setter:
+  module: circadiansetter
+  class: CircadianSetter
+
+sunrise:
+  module: sunrise
+  class: Sunrise
+  switch: input_boolean.sunrise
+
+carpe_diem:
+  module: carpediem
+  class: CarpeDiem
+  switch: input_boolean.carpediem
+  factor: input_select.carpediemfactor
+
+good_night:
+  module: goodnight
+  class: GoodNight
+  switch: input_boolean.good_night
+  devices:
+    - group.all_lights
+    - media_player.pioneer
+    - input_boolean.mm
+    - input_boolean.circadian
+    - input_boolean.sunrise
+    - input_boolean.carpediem
+
+##########
+# Contexts #
+##########
+Movie mode:
+  module: moviemode
+  class: MovieMode
+  switch: input_select.contexts
+
+cozy:
+  module: cozy
+  class: Cozy
+  switch: input_select.contexts
+
+normal:
+  module: normal
+  class: Normal
+  switch: input_select.contexts
+
+away:
+  module: away
+  class: Away
+  switch: input_select.contexts
+
+pre-sleep:
+  module: presleep
+  class: PreSleep
+  switch: input_select.contexts
+
+sleep:
+  module: sleep
+  class: Sleep
+  switch: input_select.contexts
+
+###########
+# Sensors #
+###########
+motion_sensor:
+  module: motion_sensor
+  class: MotionSensor
+  sensor: binary_sensor.motion_sensor_158d00012677c2
+
+door_sensor_main:
+  module: door_sensor_main
+  class: DoorSensorMain
+  sensor: binary_sensor.door_window_sensor_158d00014d4000
+
+############
+# Switches #
+############
+doublebutton:
+  module: doublebutton
+  class: DoubleButton
+
+singlebutton:
+  module: singlebutton
+  class: SingleButton
+
+###############
+# Off scripts #
+###############
+Reol_off:
+  module: off_scheduler
+  class: OffScheduler
+  switch: input_boolean.circadian
+  hour: 21
+  minute: 05
+  entity: light.reol
+
+Loft_off:
+  module: off_scheduler
+  class: OffScheduler
+  switch: input_boolean.circadian
+  hour: 21
+  minute: 05
+  entity: light.loft
+
+Circadian_off:
+  module: off_scheduler
+  class: OffScheduler
+  switch: input_boolean.circadian
+  hour: 21
+  minute: 26
+  entity: input_boolean.circadian
+
+Utilities:
+  module: utilities
+  class: Utilities

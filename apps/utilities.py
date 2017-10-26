@@ -1,0 +1,25 @@
+import appdaemon.appapi as appapi
+import circadiangen
+import time
+import datetime
+
+#
+# Carpediem app
+#
+# Args:
+#   switch: The switch that initializes the script
+#   factor: the input_select that determines the factor length
+
+class Utilities(appapi.AppDaemon):
+    def initialize(self):
+        self.log("Initializing {}".format(__name__))
+
+    def setstate(self, lt, bness, fade, color=""):
+        self.modulator = 1
+
+        self.log("Set " + lt + " to fade in " + str(fade * self.modulator) + "s")
+
+        if color != "":
+            self.turn_on(lt, brightness = bness, transition = self.modulator * fade, xy_color = color)
+        else:
+            self.turn_on(lt, brightness = bness, transition = self.modulator * fade)
