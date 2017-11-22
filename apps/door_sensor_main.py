@@ -32,23 +32,22 @@ class DoorSensorMain(appapi.AppDaemon):
 
         # Subscribe to sensors
         if "sensor" in self.args:
-            self.listen_state(self.opened, self.args["sensor"])
+            self.listen_state(self.opened, self.args["sensor"], new = "on")
         else:
             self.log("No sensor specified, doing nothing")
 
     def opened(self, entity, attribute, old, new, kwargs):
-        if new == "on":
-            if self.global_vars["door_opened_recently"] == 0:
-                self.global_vars["door_opened_recently"] = 1
+        if self.global_vars["door_opened_recently"] == 0:
+            self.global_vars["door_opened_recently"] = 1
 
-                self.context = self.get_state("input_select.context")
+            self.context = self.get_state("input_select.context")
 
-                if self.context == "Away":
-                    self.log("Door sensor turning on with context {}".format(self.context))
-                    self.set_state("input_select.context", state = "Normal")
-                    self.turn_on("light.hallway", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = 0.6 * self.global_vars["c_brightness"])
-            else:
-                self.log("Door was opened recently, not firing script again.")
+            if self.context == "Away":
+                self.log("Door sensor turning on with context {}".format(self.context))
+                self.set_state("input_select.context", state = "Normal")
+                self.turn_on("light.hallway", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = 0.6 * self.global_vars["c_brightness"])
+        else:
+            self.log("Door was opened recently, not firing script again.")
 
         delay = 60
         self.cancel_timer(self.handle)

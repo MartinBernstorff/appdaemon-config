@@ -15,23 +15,32 @@ class Away(appapi.AppDaemon):
         self.listen_state(self.on, "input_select.context", new = "Away")
 
     def on(self, entity, attribute, old, new, kwargs):
-        self.log("Starting Away script")
+        if self.get_state("input_select.context") == "Away":
+            self.log("Starting Away script")
+        else:
+            self.log("Aborting Away script, input_select.context == {}".format(self.get_state("input_select.context")))
 
         # Prevent Normal from firing
         self.global_vars["door_opened_recently"] = 1
         if self.get_state("input_select.context") == "Away":
             self.turn_off("group.all_lights")
             self.turn_off("media_player.pioneer")
+            self.log("Phase 1 complete")
+
+
         if self.get_state("input_select.context") == "Away":
             self.turn_off("input_boolean.sunrise")
             self.turn_off("input_boolean.carpediem")
+            self.log("Phase 2 complete")
 
         if self.get_state("input_select.context") == "Away":
             self.turn_off("group.all_lights")
             time.sleep(2)
+            self.log("Phase 3 complete")
 
         if self.get_state("input_select.context") == "Away":
             self.turn_off("group.all_lights")
             time.sleep(2)
+            self.log("Phase 4 complete")
 
         self.log("Away script execution finished!")

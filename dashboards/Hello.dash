@@ -8,8 +8,8 @@ columns: 2
 
 normal:
     widget_type: mode
-    mode: Normal
     entity: input_select.context
+    mode: Normal
     script: script.normal
     icon_on: mdi-weather-sunny
     icon_off: mdi-weather-sunny
