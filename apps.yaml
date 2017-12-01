@@ -1,10 +1,6 @@
 #############
 # Circadian #
 #############
-context_controller:
-  module: context_controller
-  class: ContextController
-
 circadian_gen:
   module: circadiangen
   class: CircadianGen
