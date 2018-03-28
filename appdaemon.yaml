@@ -1,14 +1,6 @@
-AppDaemon:
-  logfile: STDOUT
-  errorfile: STDERR
+appdaemon:
   threads: 10
-HASS:
-  ha_url: http://192.168.1.150:8123
-  ha_key:
-HADashboard:
-  dash_url: http://Lenovo:5050
-# Apps
-hello_world:
-  module: hello
-  class: HelloWorld
-
+  plugins:
+    HASS:
+      type: hass
+      ha_url: http://192.168.1.150:8123
