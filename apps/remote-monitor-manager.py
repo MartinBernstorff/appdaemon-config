@@ -1,7 +1,7 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import subprocess
 
-class RemoteMonitorManager(appapi.AppDaemon):
+class RemoteMonitorManager(hass.Hass):
 
     def initialize(self, entity="", attribute="", old="", new="", kwargs=""):
         "Initializing"

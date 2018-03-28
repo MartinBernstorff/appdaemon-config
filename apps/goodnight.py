@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import time
 
 """
@@ -9,7 +9,7 @@ import time
    devices: List of devices to be turned off [comma seperated list]
 """
 
-class GoodNight(appapi.AppDaemon):
+class GoodNight(hass.Hass):
 
     def initialize(self, entity="", attribute="", old="", new="", kwargs=""):
         self.log("Initializing GoodNight")

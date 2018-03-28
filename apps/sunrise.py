@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import time
 import datetime
 from rgb_xy import Converter
@@ -16,7 +16,7 @@ light: The light that's used for sunrise
 """
 
 
-class Sunrise(appapi.AppDaemon):
+class Sunrise(hass.Hass):
     def initialize(self):
         self.log("Initializing sunrise")
         self.switch = self.args["switch"] # The switch to turn on/off the sunrise

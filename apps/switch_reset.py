@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import shelve
 import time
 
@@ -16,7 +16,7 @@ import time
 #   Initial Version
 
 
-class SwitchReset(appapi.AppDaemon):
+class SwitchReset(hass.Hass):
 
     def initialize(self):
 

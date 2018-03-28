@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import time
 import datetime
 
@@ -10,7 +10,7 @@ import datetime
    entity: The entity to be controlled
 """
 
-class OffScheduler(appapi.AppDaemon):
+class OffScheduler(hass.Hass):
 
     def initialize(self, entity="", attribute="", old="", new="", kwargs=""):
 

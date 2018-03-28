@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import circadiangen
 import time
 import datetime
@@ -10,7 +10,7 @@ import datetime
 #   switch: The switch that initializes the script
 #   factor: the input_select that determines the factor length
 
-class Sleep(appapi.AppDaemon):
+class Sleep(hass.Hass):
     def initialize(self):
         self.log("Initializing {} with switch: {}".format(__name__, self.args["switch"]))
 

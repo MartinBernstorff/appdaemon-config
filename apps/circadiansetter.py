@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import datetime
 
 #
@@ -7,7 +7,7 @@ import datetime
 # Args:
 #   None atm
 
-class CircadianSetter(appapi.AppDaemon):
+class CircadianSetter(hass.Hass):
 
     def initialize(self):
         #Get current time and small time delta to initiate run_every

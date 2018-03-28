@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import datetime
 import time
 
@@ -8,7 +8,7 @@ import time
 # Args:
 #   None atm.
 
-class CircadianGen(appapi.AppDaemon):
+class CircadianGen(hass.Hass):
 
     def initialize(self):
         self.log("CircadianGen initialized")

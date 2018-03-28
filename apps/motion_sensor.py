@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 
 #
 # App to turn lights on when motion detected then off again after a delay
@@ -20,7 +20,7 @@ import appdaemon.appapi as appapi
 # Version 1.0:
 #   Initial Version
 
-class MotionSensor(appapi.AppDaemon):
+class MotionSensor(hass.Hass):
 
     def initialize(self):
 
@@ -39,17 +39,17 @@ class MotionSensor(appapi.AppDaemon):
             self.context = self.get_state("input_select.context")
             self.log("Motion sensor activated with context {}".format(self.context))
             if self.context == "Normal":
-                self.turn_on("light.hallway", transition = 0.5, brightness = 0.6 * self.global_vars["c_brightness"])
+                self.turn_on("light.fishbowl", transition = 0.5, brightness = 0.6 * self.global_vars["c_brightness"])
 
             elif self.context == "Cozy":
-                self.turn_on("light.hallway", transition = 1, brightness = 80)
+                self.turn_on("light.fishbowl", transition = 1, brightness = 80)
 
             elif self.context == "Movie-mode":
                 if self.get_state("input_select.playing_state") == "paused":
-                    self.turn_on("light.hallway", transition = 0.5, brightness = 150)
+                    self.turn_on("light.fishbowl", transition = 0.5, brightness = 150)
                     self.turn_on("light.bathroom", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_colortemp"])
                 elif self.get_state("input_select.playing_state") == "playing":
-                    self.turn_on("light.hallway", transition = 0.5, brightness = 1)
+                    self.turn_on("light.fishbowl", transition = 0.5, brightness = 1)
 
             elif self.context == "Sleep":
                 self.turn_on("light.monitor", xy_color = [0.6756, 0.3202], brightness = "60")
@@ -59,7 +59,7 @@ class MotionSensor(appapi.AppDaemon):
             self.handle = self.run_in(self.light_off, delay)
 
     def light_off(self, kwargs):
-        self.turn_off("light.hallway")
+        self.turn_off("light.fishbowl")
 
     def cancel(self):
         self.cancel_timer(self.handle)

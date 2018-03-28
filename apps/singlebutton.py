@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import circadiangen
 import time
 import datetime
@@ -10,15 +10,15 @@ import datetime
 #   switch: The switch that initializes the script
 #   factor: the input_select that determines the factor length
 
-class SingleButton(appapi.AppDaemon):
+class SingleButton(hass.Hass):
     def initialize(self):
         self.log("Initializing {}".format(__name__))
 
-        self.listen_event(self.button_single, "click", entity_id = "binary_sensor.switch_158d0001a1f52f", click_type = "single")
-        self.listen_event(self.button_double, "click", entity_id = "binary_sensor.switch_158d0001a1f52f", click_type = "double")
+        self.listen_event(self.single_click, "click", entity_id = "binary_sensor.switch_158d0001a1f52f", click_type = "single")
+        self.listen_event(self.double_click, "click", entity_id = "binary_sensor.switch_158d0001a1f52f", click_type = "double")
         self.listen_event(self.long_click_press, "click", entity_id = "binary_sensor.switch_158d0001a1f52f", click_type = "long_click_press")
 
-    def button_single(self, entity, attribute, old, new="", kwargs=""):
+    def single_click(self, entity, attribute, old, new="", kwargs=""):
         if self.get_state("input_select.context") == "Sleep":
             self.log("Toggling night-light for Sleep")
 
@@ -36,7 +36,7 @@ class SingleButton(appapi.AppDaemon):
                 self.turn_on("light.monitor", xy_color = [0.6948, 0.3002], brightness = "60")
 
         if self.get_state("input_select.context") == "Movie-mode":
-            self.log("Trying to play/pause")
+            self.log("Setting play/pause context")
 
             if self.get_state("input_select.playing_state") == "playing":
                 self.set_state("input_select.playing_state", state = "paused")
@@ -44,9 +44,7 @@ class SingleButton(appapi.AppDaemon):
             elif self.get_state("input_select.playing_state") == "paused":
                 self.set_state("input_select.playing_state", state = "playing")
 
-            self.call_service("media_player/media_play_pause", entity_id = "media_player.rasplex")
-
-    def button_double(self, entity, attribute, old, new="", kwargs=""):
+    def double_click(self, entity, attribute, old, new="", kwargs=""):
         # Define context-specific actions
         self.log("Double-click!")
         if self.get_state("input_select.context") != "Cozy":

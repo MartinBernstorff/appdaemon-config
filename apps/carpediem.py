@@ -1,6 +1,6 @@
 import time
 import datetime
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 
 #
 # Carpediem app
@@ -9,7 +9,7 @@ import appdaemon.appapi as appapi
 #   switch: The switch that initializes the script
 #   factor: the input_select that determines the factor length
 
-class CarpeDiem(appapi.AppDaemon):
+class CarpeDiem(hass.Hass):
 
     def initialize(self):
         self.log("Initializing carpe diem with switch: " + self.args["switch"])

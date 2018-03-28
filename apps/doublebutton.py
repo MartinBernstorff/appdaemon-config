@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 import circadiangen
 import time
 import datetime
@@ -10,7 +10,7 @@ import datetime
 #   switch: The switch that initializes the script
 #   factor: the input_select that determines the factor length
 
-class DoubleButton(appapi.AppDaemon):
+class DoubleButton(hass.Hass):
     def initialize(self):
         self.log("DoubleButton is working!")
         self.listen_event(self.right, "click", entity_id = "binary_sensor.wall_switch_right_158d000183f392", click_type = "single")

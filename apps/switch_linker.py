@@ -1,4 +1,4 @@
-import appdaemon.appapi as appapi
+import appdaemon.plugins.hass.hassapi as hass
 
 #
 # Switch-linker
@@ -7,7 +7,7 @@ import appdaemon.appapi as appapi
 #   master: The switch that's input
 #   slave: The switch that follows along
 
-class switch_linker(appapi.AppDaemon):
+class switch_linker(hass.Hass):
 
     def initialize(self):
         master = self.args["master"]
