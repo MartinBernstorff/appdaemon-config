@@ -19,25 +19,25 @@ class DoubleButton(hass.Hass):
     def right(self, entity, attribute, old, new="", kwargs=""):
         # Define context-specific actions
         if self.get_state("input_select.context") == "Normal":
-            if self.get_state("light.bathroom") != "on":
-                self.turn_on("light.bathroom", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_brightness"] * 1.4)
+            if self.get_state("light.bathroom_2_2") != "on":
+                self.turn_on("light.bathroom_2_2", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_brightness"] * 1.4)
             else:
-                self.turn_off("light.bathroom")
+                self.turn_off("light.bathroom_2_2")
         elif self.get_state("input_select.context") == "Pre-sleep":
-            if self.get_state("light.bathroom") == "off":
-                self.turn_on("light.bathroom", xy_color = [0.6948, 0.3002], brightness = "0")
+            if self.get_state("light.bathroom_2_2") == "off":
+                self.turn_on("light.bathroom_2_2", xy_color = [0.6948, 0.3002], brightness = "0")
             else:
-                self.turn_off("light.bathroom")
+                self.turn_off("light.bathroom_2_2")
         elif self.get_state("input_select.context") == "Cozy":
-            if self.get_state("light.bathroom") == "off":
-                self.turn_on("light.bathroom", xy_color = [0.52, 0.42], brightness = "150")
+            if self.get_state("light.bathroom_2_2") == "off":
+                self.turn_on("light.bathroom_2_2", xy_color = [0.52, 0.42], brightness = "150")
             else:
-                self.turn_off("light.bathroom")
+                self.turn_off("light.bathroom_2_2")
         else: #And if no context is recognized
-            if self.get_state("light.bathroom") == "on":
-                self.turn_off("light.bathroom")
-            if self.get_state("light.bathroom") == "off":
-                self.turn_on("light.bathroom")
+            if self.get_state("light.bathroom_2_2") == "on":
+                self.turn_off("light.bathroom_2_2")
+            if self.get_state("light.bathroom_2_2") == "off":
+                self.turn_on("light.bathroom_2_2")
 
     def both(self, entity, attribute, old, new="", kwargs=""):
         if self.get_state("input_select.context") != "Away":

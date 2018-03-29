@@ -21,7 +21,7 @@ class Sunrise(hass.Hass):
         self.log("Initializing sunrise")
         self.switch = self.args["switch"] # The switch to turn on/off the sunrise
 
-        self.entity = "light.bathroom" # The light to act as sun
+        self.entity = "light.bathroom_2" # The light to act as sun
 
         self.listen_state(self.rise, self.args["switch"], new="on") # Callback for testing
 

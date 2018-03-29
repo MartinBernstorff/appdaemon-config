@@ -47,7 +47,7 @@ class MotionSensor(hass.Hass):
             elif self.context == "Movie-mode":
                 if self.get_state("input_select.playing_state") == "paused":
                     self.turn_on("light.fishbowl", transition = 0.5, brightness = 150)
-                    self.turn_on("light.bathroom", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_colortemp"])
+                    self.turn_on("light.bathroom_2", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_colortemp"])
                 elif self.get_state("input_select.playing_state") == "playing":
                     self.turn_on("light.fishbowl", transition = 0.5, brightness = 1)
 

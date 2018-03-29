@@ -20,4 +20,4 @@ class PreSleep(hass.Hass):
         self.log("Running pre-sleep actions")
         self.turn_off("group.all_lights")
         self.turn_on("light.monitor", xy_color = [0.6948, 0.3002], brightness = "60")
-        self.turn_on("light.bathroom", xy_color = [0.6948, 0.3002], brightness = "0")
+        self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "0")
