@@ -19,5 +19,5 @@ class PreSleep(hass.Hass):
     def on(self, entity, attribute, old, new, kwargs):
         self.log("Running pre-sleep actions")
         self.turn_off("group.all_lights")
-        self.turn_on("light.monitor", xy_color = [0.6756, 0.3202], brightness = "60")
-        self.turn_on("light.bathroom_2", xy_color = [0.6756, 0.3202], brightness = "0")
+        self.turn_on("light.monitor", xy_color = [0.6948, 0.3002], brightness = "60")
+        self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "1")

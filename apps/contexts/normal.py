@@ -19,6 +19,7 @@ class Normal(hass.Hass):
 
     def on(self, entity, attribute, old, new, kwargs):
         if self.get_state("input_boolean.circadian") == "on":
+            self.log("Circadian switch on, updating lights to Normal context")
             self.brightness = self.global_vars["c_brightness"]
             self.xy_color = self.global_vars["c_colortemp"]
 
