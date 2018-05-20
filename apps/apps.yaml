@@ -32,9 +32,9 @@ good_night:
     - input_boolean.sunrise
     - input_boolean.carpediem
 
-##########
+############
 # Contexts #
-##########
+############
 Movie mode:
   module: moviemode
   class: MovieMode
@@ -85,9 +85,13 @@ doublebutton:
   module: doublebutton
   class: DoubleButton
 
+singlebutton_a:
+  module: singlebutton_a
+  class: SingleButton_A
+
 singlebutton:
-  module: singlebutton
-  class: SingleButton
+  module: singlebutton_b
+  class: SingleButton_B
 
 ###############
 # Off scripts #
@@ -115,6 +119,10 @@ Circadian_off:
   hour: 21
   minute: 26
   entity: input_boolean.circadian
+
+#############
+# Utilities #
+#############
 
 Utilities:
   module: utilities
