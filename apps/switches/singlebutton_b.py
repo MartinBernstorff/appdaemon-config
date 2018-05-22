@@ -58,3 +58,47 @@ class SingleButton_B(hass.Hass):
             self.set_state("input_select.context", state="Pre-sleep")
         else:
             self.set_state("input_select.context", state="Normal")
+
+        if self.get_state("input_select.context") == "Sleep":
+            self.switch = "input_boolean.sunrise"
+            if self.get_state(self.switch) == "off":
+                self.condseq_on(switch=self.switch, entity="light.monitor", brightness=1, t_fade=1, color=[0.32, 0.33])
+                self.condseq_on(switch=self.switch, entity="light.monitor", brightness=1, t_fade=250, color=[0.32, 0.33])
+                self.condseq_on(switch=self.switch, entity="light.monitor", brightness=15, t_fade=200, color=[0.32, 0.33])
+            if self.get_state(self.switch) == "on":
+                self.turn_off("input_boolean.sunrise")
+                self.turn_off("group.all_lights")
+                time.sleep(2)
+                self.turn_off("group.all_lights")
+
+    def condseq_on(self, switch=None, entity=None, brightness=None, t_fade=0, color=None, post_delay=0):
+        """
+            A function for conditional sequentilization
+            Takes the following arguments:
+
+            switch: An input boolean that's conditional for the sequence to
+            keep running
+
+            entity: The entity to be affected
+
+            For lights:
+            brightness: End brightness [0-255]
+            fade: How long the fade should take (in seconds)
+            color: End colour [X, Y]
+            post_delay: How long after the action there should be an additional delay (in seconds)
+        """
+        device, entity_id = self.split_entity(self.entity)
+        if switch is not None:
+            if self.get_state(switch) == "on":
+                if device == "light":
+                    if color is not None:
+                        self.turn_on(entity, brightness = brightness, transition = t_fade * self.modifier, xy_color = color)
+                        if self.get_state(switch) == "on":
+                            time.sleep(t_fade * self.modifier)
+                            time.sleep(post_delay * self.modifier)
+                    else:
+                        self.turn_on(entity, brightness = brightness, transition = t_fade * self.modifier)
+                        if self.get_state(switch) == "on":
+                            time.sleep(t_fade * self.modifier)
+                            time.sleep(post_delay * self.modifier)
+                self.turn_on(entity)
