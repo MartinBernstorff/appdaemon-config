@@ -24,8 +24,8 @@ class Normal(hass.Hass):
             self.xy_color = self.global_vars["c_colortemp"]
 
             self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(self.xy_color, self.brightness))
-            self.turn_on("light.loft", transition = 1, xy_color = self.xy_color, brightness = 0.6 * self.brightness)
-            self.turn_on("light.reol", transition = 1, xy_color = self.xy_color, brightness = 0.4 * self.brightness)
+            self.turn_on("light.ikea_loft", transition = 1, xy_color = self.xy_color, brightness = 0.6 * self.brightness)
+            self.turn_on("ight.color_temperature_light_1", transition = 1, xy_color = self.xy_color, brightness = 0.4 * self.brightness)
             self.turn_on("light.monitor", transition = 1, xy_color = self.xy_color, brightness = 1.6 * self.brightness)
         else:
             # self.log("Circadian switch is off, lights not updated")

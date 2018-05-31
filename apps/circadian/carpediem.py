@@ -64,7 +64,7 @@ class CarpeDiem(hass.Hass):
 
     def carpe_reol(self, entity, attribute, old, new, kwargs):
         #Make short reol light var
-        reol_light = "light.reol"
+        reol_light = "ight.color_temperature_light_1"
         if self.get_state("light.monitor", attribute="brightness") is None:
             time.sleep(self.modulator * 400)
             self.setstate(reol_light, self.global_vars["c_brightness"], 300, self.global_vars["c_colortemp"]) #Circadian hue
@@ -77,7 +77,7 @@ class CarpeDiem(hass.Hass):
 
     def carpe_loft(self, entity, attribute, old, new, kwargs):
         #Make short reol light var
-        loft_light = "light.loft"
+        loft_light = "light.ikea_loft"
         if self.get_state("light.monitor", attribute="brightness") is None:
             time.sleep(self.modulator * 600)
             self.setstate(loft_light, self.global_vars["c_brightness"], 1, self.global_vars["c_colortemp"]) #Circadian hue

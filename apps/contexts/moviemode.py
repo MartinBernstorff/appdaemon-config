@@ -43,8 +43,8 @@ class MovieMode(hass.Hass):
 
         # Turn on the lights
         self.setstate("light.monitor", 50, 10)
-        self.setstate("light.loft", 0, 8)
-        self.setstate("light.reol", 1, 13)
+        self.setstate("light.ikea_loft", 0, 8)
+        self.setstate("ight.color_temperature_light_1", 1, 13)
 
         # Switch source to tuner, to power on speakers
         if self.get_state("media_player.pioneer", "source") != "TUNER":
@@ -71,7 +71,7 @@ class MovieMode(hass.Hass):
             self.log("Source is already RPI")
         self.call_service("media_player/volume_set", entity_id = "media_player.pioneer", volume_level = 0.7)
 
-        self.turn_off("light.loft")
+        self.turn_off("light.ikea_loft")
         self.turn_off("light.hallway")
 
     def off(self, entity, attribute, old, new, kwargs):
@@ -85,8 +85,8 @@ class MovieMode(hass.Hass):
         else: # Slower fade, if switch is turned off during credits
             self.log("Rasplex playing, slow fade")
             self.setstate("light.monitor", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
-            self.setstate("light.reol", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
-            self.setstate("light.loft", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
+            self.setstate("ight.color_temperature_light_1", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
+            self.setstate("light.ikea_loft", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
 
             vollevel = self.get_state("media_player.pioneer", "volume_level")
 
@@ -112,7 +112,7 @@ class MovieMode(hass.Hass):
 
         if self.get_state("input_select.context") == "Movie-mode":
             self.setstate("light.monitor", 100, 10, self.global_vars["c_colortemp"])
-            self.setstate("light.reol", 1, 10, self.global_vars["c_colortemp"])
+            self.setstate("ight.color_temperature_light_1", 1, 10, self.global_vars["c_colortemp"])
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1
