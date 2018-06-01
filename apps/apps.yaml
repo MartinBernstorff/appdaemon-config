@@ -102,7 +102,7 @@ Reol_off:
   switch: input_boolean.circadian
   hour: 21
   minute: 05
-  entity: ight.color_temperature_light_1
+  entity: light.color_temperature_light_1
 
 Loft_off:
   module: off_scheduler
@@ -130,3 +130,7 @@ Utilities:
 Remote_Monitor_Manager:
   module: remote-monitor-manager
   class: RemoteMonitorManager
+
+FunctionTester:
+  module: function_tester
+  class: FunctionTester
