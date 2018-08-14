@@ -25,9 +25,9 @@ class SingleButton_B(hass.Hass):
         self.log("Context is {}, moving forward".format(self.get_state("input_select.context")))
         if self.get_state("input_select.context") == "Normal":
             self.set_state("input_select.context", state="Pre-sleep")
-        if self.get_state("input_select.context") == "Pre-sleep":
-            self.set_state("input_select.context", state="Sleep")
-        if self.get_state("input_select.context") == "Sleep" and self.now_is_between("05:00:00", "18:00:00"):
+        elif self.get_state("input_select.context") == "Pre-sleep":
+            self.set_state("input_select.context", state="Asleep")
+        elif self.get_state("input_select.context") == "Asleep":
             self.turn_on("input_boolean.carpediem")
         self.log("New context is {}".format(self.get_state("input_select.context")))
 
@@ -36,14 +36,16 @@ class SingleButton_B(hass.Hass):
 
     def long_click_press(self, entity, attribute, old, new="", kwargs=""):
         self.log("Long_click_press!")
-        self.log("{} turned {}".format(entity, new))
+        self.log("Context is {}, moving backwards".format(self.get_state("input_select.context")))
         if self.get_state("input_select.context") == "Normal":
-            self.set_state("input_select.context", state="Sleep")
-        if self.get_state("input_select.context") == "Pre-sleep":
+            self.set_state("input_select.context", state="Asleep")
+        elif self.get_state("input_select.context") == "Pre-sleep":
             self.set_state("input_select.context", state="Normal")
-        if self.get_state("input_select.context") == "Sleep":
+            self.turn_on("")
+        elif self.get_state("input_select.context") == "Asleep":
             if self.get_state("input_boolean.carpediem") == "off":
                 self.set_state("input_select.context", state="Pre-sleep")
             elif self.get_state("input_boolean.carpediem") == "on":
                 self.turn_off("input_boolean.carpediem")
                 self.turn_on("input_boolean.good_night")
+        self.log("New context is {}".format(self.get_state("input_select.context")))
