@@ -60,9 +60,9 @@ pre-sleep:
   class: PreSleep
   switch: input_select.contexts
 
-sleep:
-  module: sleep
-  class: Sleep
+asleep:
+  module: asleep
+  class: Asleep
   switch: input_select.contexts
 
 ###########
