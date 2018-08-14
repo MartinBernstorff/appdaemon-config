@@ -39,27 +39,28 @@ class MotionSensor(hass.Hass):
             self.context = self.get_state("input_select.context")
             self.log("Motion sensor activated with context {}".format(self.context))
             if self.context == "Normal":
-                self.turn_on("light.fishbowl", transition = 0.5, brightness = 0.6 * self.global_vars["c_brightness"])
+                self.turn_on("light.hallway_2", transition = 0.5, kelvin = self.global_vars["c_colortemp"] - 300, brightness = 0.6 * self.global_vars["c_brightness"])
 
             elif self.context == "Cozy":
-                self.turn_on("light.fishbowl", transition = 1, brightness = 80)
+                self.turn_on("light.hallway_2", transition = 1, kelvin = 2000, brightness = 80)
 
             elif self.context == "Movie-mode":
                 if self.get_state("input_select.playing_state") == "paused":
-                    self.turn_on("light.fishbowl", transition = 0.5, brightness = 150)
-                    self.turn_on("light.bathroom_2", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_colortemp"])
+                    self.turn_on("light.hallway_2", kelvin = self.global_vars["c_colortemp"], transition = 0.5, brightness = 150)
+                    self.turn_on("light.bathroom_2", transition = 0.5, kelvin = self.global_vars["c_colortemp"], brightness = self.global_vars["c_brightness"])
                 elif self.get_state("input_select.playing_state") == "playing":
-                    self.turn_on("light.fishbowl", transition = 0.5, brightness = 1)
-
-            elif self.context == "Sleep":
-                self.turn_on("light.monitor", xy_color = [0.6756, 0.3202], brightness = "60")
+                    self.turn_on("light.hallway_2", transition = 0.5, kelvin = self.global_vars["c_colortemp"], brightness = 1)
 
             delay = 300
             self.cancel_timer(self.handle)
             self.handle = self.run_in(self.light_off, delay)
 
     def light_off(self, kwargs):
-        self.turn_off("light.fishbowl")
+        if self.get_state("light.bathroom_2") == "on":
+            self.cancel_timer(self.handle)
+            self.handle = self.run_in(self.light_off, 10)
+        else:
+            self.turn_off("light.hallway_2")
 
     def cancel(self):
         self.cancel_timer(self.handle)

@@ -66,35 +66,34 @@ class CircadianGen(hass.Hass):
     def gen_circ_colortemp(self, entity="", attribute="", old="", new="", kwargs=""):
         self.now = self.datetime()
         t0 = self.now.replace(hour=0, minute=0, second=0) + self.global_vars["c_offset"]
-        t1 = self.now.replace(hour=0, minute=1, second=0) + self.global_vars["c_offset"]
-        t2 = self.now.replace(hour=13, minute=0, second=0) + self.global_vars["c_offset"]
+        t1 = self.now.replace(hour=6, minute=1, second=0) + self.global_vars["c_offset"]
+        t2 = self.now.replace(hour=10, minute=0, second=0) + self.global_vars["c_offset"]
         t3 = self.now.replace(hour=19, minute=0, second=0) + self.global_vars["c_offset"]
         t4 = self.now.replace(hour=20, minute=45, second=0) + self.global_vars["c_offset"]
         t5 = self.now.replace(hour=21, minute=15, second=0) + self.global_vars["c_offset"]
 
         if self.now > t0 and self.now <= t1:
-            self.set_circ_colortemp(0.4255, 0.5268, 0.3998, 0.4133, t1, t0)
+            self.set_circ_colortemp(1000, 1000, t0, t1)
         elif self.now > t1 and self.now <= t2:
-            self.set_circ_colortemp(0.3136, 0.4255, 0.3237, 0.3998, t2, t1)
+            self.set_circ_colortemp(2000, 5000, t1, t2)
         elif self.now > t2 and self.now <= t3:
-            self.set_circ_colortemp(0.4255, 0.3136, 0.3998, 0.3237, t3, t2)
+            self.set_circ_colortemp(5000, 5000, t2, t3)
         elif self.now > t3 and self.now <= t4:
-            self.set_circ_colortemp(0.5268, 0.4255, 0.4133, 0.3998, t4, t3)
+            self.set_circ_colortemp(5000, 2500, t3, t4)
         elif self.now > t4 and self.now <= t5:
-            self.set_circ_colortemp(0.704, 0.5268, 0.296, 0.4133, t5, t4)
+            self.set_circ_colortemp(3000, 1000, t4, t5)
         else:
-            self.global_vars["c_colortemp"] = [ 0.704, 0.296 ]
+            self.global_vars["c_colortemp"] = 1000
 
-        #self.log("Set new circ brightness {} at {}".format(self.global_vars["c_brightness"], self.time()))
-
-    def set_circ_colortemp(self, end_x, start_x, end_y, start_y, endtime, starttime):
+    def set_circ_colortemp(self, starttemp, endtemp, starttime, endtime):
         fadelength = (endtime-starttime).seconds
         position = (self.now-starttime).seconds
 
-        self.x_now = start_x + (end_x - start_x) * position / fadelength
-        self.y_now = start_y + (end_y - start_y) * position / fadelength
+        self.colortemp = starttemp + (endtemp - starttemp) * position / fadelength
 
-        self.global_vars["c_colortemp"] = [ self.x_now, self.y_now]
+        self.global_vars["c_colortemp"] = self.colortemp
+
+        #self.log("Set new colortemp {} at {}".format(self.global_vars["c_colortemp"], self.time()))
 
     def update_offset(self, entity="", attribute="", old="", new="", kwargs=""):
         self.hour = int(self.get_state("input_select.circadian_hour"))

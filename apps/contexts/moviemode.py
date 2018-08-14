@@ -44,7 +44,7 @@ class MovieMode(hass.Hass):
         # Turn on the lights
         self.setstate("light.monitor", 50, 10)
         self.setstate("light.ikea_loft", 0, 8)
-        self.setstate("ight.color_temperature_light_1", 1, 13)
+        self.setstate("light.color_temperature_light_1", 1, 13)
 
         # Switch source to tuner, to power on speakers
         if self.get_state("media_player.pioneer", "source") != "TUNER":
@@ -72,7 +72,7 @@ class MovieMode(hass.Hass):
         self.call_service("media_player/volume_set", entity_id = "media_player.pioneer", volume_level = 0.7)
 
         self.turn_off("light.ikea_loft")
-        self.turn_off("light.hallway")
+        self.turn_off("light.hallway_2")
 
     def off(self, entity, attribute, old, new, kwargs):
         # Quick fades if rasplex is already stopped
@@ -85,7 +85,7 @@ class MovieMode(hass.Hass):
         else: # Slower fade, if switch is turned off during credits
             self.log("Rasplex playing, slow fade")
             self.setstate("light.monitor", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
-            self.setstate("ight.color_temperature_light_1", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
+            self.setstate("light.color_temperature_light_1", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
             self.setstate("light.ikea_loft", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
 
             vollevel = self.get_state("media_player.pioneer", "volume_level")
@@ -112,7 +112,7 @@ class MovieMode(hass.Hass):
 
         if self.get_state("input_select.context") == "Movie-mode":
             self.setstate("light.monitor", 100, 10, self.global_vars["c_colortemp"])
-            self.setstate("ight.color_temperature_light_1", 1, 10, self.global_vars["c_colortemp"])
+            self.setstate("light.color_temperature_light_1", 1, 10, self.global_vars["c_colortemp"])
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1
@@ -120,7 +120,7 @@ class MovieMode(hass.Hass):
         self.log("Set " + lt + " to fade in " + str(fade * self.modulator) + "s")
 
         if color != "":
-            self.turn_on(lt, brightness = bness, transition = self.modulator * fade, xy_color = color)
+            self.turn_on(lt, brightness = bness, transition = self.modulator * fade, kelvin = color)
         else:
             self.turn_on(lt, brightness = bness, transition = self.modulator * fade)
 

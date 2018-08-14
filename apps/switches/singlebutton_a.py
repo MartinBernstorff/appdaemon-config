@@ -21,7 +21,7 @@ class SingleButton_A(hass.Hass):
         # Define context-specific actions
         if self.get_state("input_select.context") == "Normal":
             if self.get_state("light.bathroom_2") != "on":
-                self.turn_on("light.bathroom_2", transition = 0.5, xy_color = self.global_vars["c_colortemp"], brightness = self.global_vars["c_brightness"] * 1.4)
+                self.turn_on("light.bathroom_2", transition = 0.5, kelvin = self.global_vars["c_colortemp"], brightness = self.global_vars["c_brightness"] * 1.4)
             else:
                 self.turn_off("light.bathroom_2")
         elif self.get_state("input_select.context") == "Pre-sleep":
@@ -41,15 +41,11 @@ class SingleButton_A(hass.Hass):
                 self.turn_on("light.bathroom_2")
 
     def double_click(self, entity, attribute, old, new="", kwargs=""):
-        if self.get_state("input_select.context") != "Away":
-            self.set_state("input_select.context", state = "Away")
-        else:
-            self.global_vars["door_opened_recently"] = 1
-            self.set_state("input_select.context", state = "Normal")
+        self.log("Double-click!")
 
     def long_click_press(self, entity, attribute, old, new="", kwargs=""):
         self.log("{} turned {}".format(entity, new))
-        if self.get_state("input_select.context") != "Pre-sleep":
-            self.set_state("input_select.context", state="Pre-sleep")
+        if self.get_state("input_select.context") != "Cozy":
+            self.set_state("input_select.context", state="Cozy")
         else:
             self.set_state("input_select.context", state="Normal")

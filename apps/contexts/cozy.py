@@ -17,10 +17,11 @@ class Cozy(hass.Hass):
         self.listen_state(self.on, "input_select.context", new = "Cozy")
 
     def on(self, entity, attribute, old, new, kwargs):
-        self.setstate("light.hallway", 50, 1, [0.5267, 0.4132])
+        self.setstate("light.hallway_2", 1, 1, 2300)
         self.turn_off("light.ikea_loft")
-        self.setstate("light.monitor", 180, 1, [0.5267, 0.4132])
-        self.setstate("ight.color_temperature_light_1", 180, 1, [0.3823, 0.3708])
+        self.setstate("light.monitor", 180, 1, 2300)
+        self.setstate("light.color_temperature_light_1", 180, 1, 2300)
+        self.setstate("light.color_temperature_light_1_2", 30, 1, 2300)
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1
@@ -28,6 +29,6 @@ class Cozy(hass.Hass):
         self.log("Set " + lt + " to fade in " + str(fade * self.modulator) + "s")
 
         if color != "":
-            self.turn_on(lt, brightness = bness, transition = self.modulator * fade, xy_color = color)
+            self.turn_on(lt, brightness = bness, transition = self.modulator * fade, kelvin = color)
         else:
             self.turn_on(lt, brightness = bness, transition = self.modulator * fade)

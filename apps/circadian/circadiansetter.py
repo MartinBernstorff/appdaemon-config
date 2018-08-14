@@ -34,17 +34,21 @@ class CircadianSetter(hass.Hass):
     def set_lights(self, entity="", attribute="", old="", new="", kwargs=""):
         if self.get_state("input_boolean.circadian") == "on" and self.get_state("input_select.context") == "Normal":
             self.setlight("light.monitor", 240, 1.4)
-            self.setlight("ight.color_temperature_light_1", 240, 0.4)
+            self.setlight("light.bathroom_2", 240, 1.4)
+            self.setlight("light.color_temperature_light_1", 240, 0.4)
+            self.setlight("light.color_temperature_light_1_2", 240, 0.25)
             self.setlight("light.ikea_loft", 240, 0.6)
-            #self.log("Updating lights, time is {}, color temp is {} and brightness is {}".format(self.now.time(), self.global_vars["c_colortemp"], self.global_vars["c_brightness"]))
+            # self.log("Updating lights, time is {}, color temp is {} and brightness is {}".format(self.now.time(), self.global_vars["c_colortemp"], self.global_vars["c_brightness"]))
         else:
             self.log("Circadian switch is off, lights not updated")
 
     def set_lights_quick(self, entity="", attribute="", old="", new="", kwargs=""):
         if self.get_state("input_boolean.circadian") == "on" and self.get_state("input_select.context") == "Normal":
-            self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(self.global_vars["c_colortemp"], self.global_vars["c_brightness"]))
+            self.log("Updating lights quickly,\n    Kelvin: {}\n    Brightness: {}".format(self.global_vars["c_colortemp"], self.global_vars["c_brightness"]))
             self.setlight("light.monitor", 5, 1.4)
-            self.setlight("ight.color_temperature_light_1", 2, 0.4)
+            self.setlight("light.bathroom_2", 2, 1.4)
+            self.setlight("light.color_temperature_light_1", 2, 0.4)
+            self.setlight("light.color_temperature_light_1_2", 2, 0.25)
             self.setlight("light.ikea_loft", 1, 0.6)
         else:
             # self.log("Circadian switch is off, lights not updated")
@@ -52,4 +56,7 @@ class CircadianSetter(hass.Hass):
 
     def setlight(self, light, transition, modifier):
         if self.get_state(light) == "on":
-            self.turn_on(light, transition = transition, xy_color = self.global_vars["c_colortemp"], brightness = modifier * self.global_vars["c_brightness"])
+            if (light == "light.ikea_loft") or (light == "light.color_temperature_light_1"):
+                self.turn_on(light, transition = transition, kelvin = (self.global_vars["c_colortemp"] - 400), brightness = modifier * self.global_vars["c_brightness"])
+            else:
+                self.turn_on(light, transition = transition, kelvin = self.global_vars["c_colortemp"], brightness = modifier * self.global_vars["c_brightness"])

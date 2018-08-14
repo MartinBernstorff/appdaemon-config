@@ -89,9 +89,13 @@ singlebutton_a:
   module: singlebutton_a
   class: SingleButton_A
 
-singlebutton:
+singlebutton_b:
   module: singlebutton_b
   class: SingleButton_B
+
+singlebutton_c:
+  module: singlebutton_c
+  class: SingleButton_C
 
 ###############
 # Off scripts #
@@ -127,9 +131,9 @@ Utilities:
   module: utilities
   class: Utilities
 
-Remote_Monitor_Manager:
-  module: remote-monitor-manager
-  class: RemoteMonitorManager
+#Remote_Monitor_Manager:
+#  module: remote-monitor-manager
+#  class: RemoteMonitorManager
 
 FunctionTester:
   module: function_tester

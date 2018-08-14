@@ -49,7 +49,7 @@ class OffScheduler(hass.Hass):
 
     def light_off(self, entity="", attribute="", old="", new="", kwargs=""):
         if self.get_state(self.entity) == "on":
-            self.turn_on(self.entity, transition = 30, xy_color = self.global_vars["c_colortemp"], brightness = 0)
+            self.turn_on(self.entity, transition = 30, kelvin = self.global_vars["c_colortemp"], brightness = 0)
             time.sleep(30)
             self.turn_off(self.entity)
         else:
