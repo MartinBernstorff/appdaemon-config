@@ -23,15 +23,31 @@ class Sunrise(hass.Hass):
 
         self.entity = "light.bathroom_2" # The light to act as sun
 
-        self.listen_state(self.rise, self.args["switch"], new="on") # Callback for testing
+        self.listen_state(self.rise_instant, self.args["switch"], new="on") # Callback for testing
 
-    def rise(self, entity="", attribute="", old="", new="", kwargs=""):
+        self.listen_state(self.set_alarm, "input_select.sunrise_hour") # Callback for testing
+        self.listen_state(self.set_alarm, "input_select.sunrise_minute") # Callback for testing
+        self.listen_state(self.set_alarm, "input_boolean.sunrise_alarm") # Callback for testing
+
+    def set_alarm(self, entity="", attribute="", old="", new="", kwargs=""):
+        self.alarm = None
+        if self.get_state("input_boolean.sunrise_alarm") == "on":
+            self.hour = self.get_state("input_select.sunrise_hour") # hour here
+            self.minute = self.get_state("input_select.sunrise_minute")# minute her
+            self.alarm_time = self.parse_time("{}:{}:00".format(self.hour, self.minute))
+
+            self.log("Setting alarm to {}:{}".format(self.hour, self.minute))
+            self.alarm = self.run_daily(self.rise_instant, self.alarm_time)
+
+    def rise_instant(self, entity="", attribute="", old="", new="", kwargs=""):
+        self.natural()
+
+    def rise_delay(self, entity="", attribute="", old="", new="", kwargs=""):
         self.modifier = 1
         self.delay = 75 # Time in minutes to wait for sunrise, 45 + smart period (30) for Sleep as Android default
         self.turn_off("input_boolean.circadian")
         self.log("The sun is rising in {} mins!".format(self.modifier * self.delay))
         self.sunrise_timer = self.run_in(self.natural, self.modifier * self.delay*60)
-
 
     #######################
     # Different sequences #
