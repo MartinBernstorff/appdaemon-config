@@ -46,10 +46,6 @@ class Sunrise(hass.Hass):
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=1, t_fade=10, color=3000)
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=15, t_fade=20, color=3000)
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=self.global_vars["c_brightness"], t_fade=570, color=3000)
-        self.condseq_on(switch=self.switch, entity="light.color_temperature_light_1", brightness=self.global_vars["c_brightness"], t_fade=15, color=3000)
-        self.condseq_on(switch=self.switch, entity="light.hovedrum", brightness=self.global_vars["c_brightness"], t_fade=15, color=3000)
-        self.turn_on("input_boolean.circadian")
-        self.set_state("input_select.context", state = "Normal")
 
     def rise_delay(self, entity="", attribute="", old="", new="", kwargs=""):
         self.modifier = 1

@@ -31,6 +31,8 @@ class CarpeDiem(hass.Hass):
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
 
+        self.global_vars["c_colortemp"] = 3000
+
         self.run_in(self.carpe_monitor, self.modulator * 1)
         self.run_in(self.carpe_bathroom, self.modulator * 1)
 
@@ -39,7 +41,7 @@ class CarpeDiem(hass.Hass):
 
         self.run_in(self.carpe_loft, self.modulator * 30)
 
-        self.run_in(self.finished, self.modulator * 120)
+        self.run_in(self.finished, self.modulator * 240)
 
     def carpe_monitor(self, kwargs):
         light = "light.monitor"
