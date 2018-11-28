@@ -81,21 +81,17 @@ door_sensor_main:
 ############
 # Switches #
 ############
-doublebutton:
-  module: doublebutton
-  class: DoubleButton
+right_hallway:
+  module: right_hallway
+  class: RightHallway
 
-singlebutton_a:
-  module: singlebutton_a
-  class: SingleButton_A
+by_bed:
+  module: by_bed
+  class: ByBed
 
-singlebutton_b:
-  module: singlebutton_b
-  class: SingleButton_B
-
-singlebutton_c:
-  module: singlebutton_c
-  class: SingleButton_C
+top_hallway:
+  module: top_hallway
+  class: TopHallway
 
 ###############
 # Off scripts #

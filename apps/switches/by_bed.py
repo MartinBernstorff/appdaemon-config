@@ -10,7 +10,9 @@ import datetime
 #   switch: The switch that initializes the script
 #   factor: the input_select that determines the factor length
 
-class SingleButton_B(hass.Hass):
+# Button B
+
+class ByBed(hass.Hass):
     def initialize(self):
         self.log("Initializing {}".format(__name__))
 

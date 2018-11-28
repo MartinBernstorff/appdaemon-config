@@ -10,7 +10,9 @@ import datetime
 #   switch: The switch that initializes the script
 #   factor: the input_select that determines the factor length
 
-class SingleButton_A(hass.Hass):
+# Button A
+
+class RightHallway(hass.Hass):
     def initialize(self):
         self.log("SingleButton_A, at your service.")
         self.listen_event(self.single_click, "click", entity_id = "binary_sensor.switch_158d000201a251", click_type = "single")
@@ -25,6 +27,11 @@ class SingleButton_A(hass.Hass):
             else:
                 self.turn_off("light.bathroom_2")
         elif self.get_state("input_select.context") == "Pre-sleep":
+            if self.get_state("light.bathroom_2") == "off":
+                self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "0")
+            else:
+                self.turn_off("light.bathroom_2")
+        elif self.get_state("input_select.context") == "Asleep":
             if self.get_state("light.bathroom_2") == "off":
                 self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "0")
             else:
