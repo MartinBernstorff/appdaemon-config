@@ -14,7 +14,6 @@ class Normal(hass.Hass):
     def initialize(self):
         self.log("Initializing {} with switch: {}".format(__name__, self.args["switch"]))
 
-        self.set_state("input_select.context", state = "")
         self.listen_state(self.on, "input_select.context", new = "Normal")
 
     def on(self, entity, attribute, old, new, kwargs):
@@ -27,3 +26,4 @@ class Normal(hass.Hass):
         self.turn_on("light.color_temperature_light_1", transition = 1, kelvin = self.kelvin, brightness = 0.4 * self.brightness)
         self.turn_on("light.color_temperature_light_1_2", transition = 1, kelvin = self.kelvin, brightness = 0.2 * self.brightness)
         self.turn_on("light.monitor", transition = 1, kelvin = self.kelvin, brightness = 1.6 * self.brightness)
+        self.turn_on("input_boolean.circadian")
