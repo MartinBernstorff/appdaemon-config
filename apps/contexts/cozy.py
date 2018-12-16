@@ -19,9 +19,8 @@ class Cozy(hass.Hass):
     def on(self, entity, attribute, old, new, kwargs):
         self.setstate("light.hallway_2", 1, 1, 2300)
         self.turn_off("light.ikea_loft")
-        self.setstate("light.monitor", 180, 1, 2300)
-        self.setstate("light.color_temperature_light_1", 180, 1, 2300)
-        self.setstate("light.color_temperature_light_1_2", 30, 1, 2300)
+        self.setstate("light.monitor", 125, 1, 2300)
+        self.setstate("light.color_temperature_light_1", 63, 1, 2300)
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1
