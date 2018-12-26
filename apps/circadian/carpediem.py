@@ -7,7 +7,6 @@ import appdaemon.plugins.hass.hassapi as hass
 #
 # Args:
 #   switch: The switch that initializes the script
-#   factor: the input_select that determines the factor length
 
 class CarpeDiem(hass.Hass):
     def initialize(self):
@@ -19,7 +18,8 @@ class CarpeDiem(hass.Hass):
         self.reset()
 
         # Register callback
-        self.on_handle = self.listen_state(self.carpe_diem, switch, new="on")
+        self.on_default = self.listen_state(self.carpe_diem, switch, new="on")
+        self.on_mieke = self.listen_state(self.carpe_mieke, "input_boolean.carpemieke", new="on")
 
         #Reset the switch at 20:00 each day
         self.time = datetime.time(20, 0, 0)
@@ -61,8 +61,9 @@ class CarpeDiem(hass.Hass):
     def carpe_mieke(self, entity, attribute, old, new, kwargs):
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
+        self.log("Starting carpe-Mieke")
 
-        self.global_vars["c_colortemp"] = 2000
+        self.global_vars["c_colortemp"] = 2500
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -80,7 +81,7 @@ class CarpeDiem(hass.Hass):
 
         for light in lights:
             self.run_in(self.light_controller, light[1], lt=light[0],
-                        fade=light[2])
+                        fade=light[2], switch="input_boolean.carpemieke")
 
             light_duration = light[1] + light[2]
 
@@ -90,14 +91,18 @@ class CarpeDiem(hass.Hass):
         self.run_in(self.finished, duration)
 
     def light_controller(self, kwargs):
+        if kwargs["switch"] is None:
+            switch = self.args["switch"]
+        else:
+            switch = kwargs["switch"]
+
         self.setstate(lt=kwargs["lt"],
                       brightness=self.global_vars["c_brightness"],
                       fade=kwargs["fade"],
-                      color=self.global_vars["c_colortemp"])
+                      color=self.global_vars["c_colortemp"],
+                      switch=switch)
 
-    def setstate(self, lt, brightness, fade, color=""):
-        switch = self.args["switch"]
-
+    def setstate(self, lt, brightness, fade, switch, color=""):
         if self.get_state(switch) == "on":
             self.log("Set " + lt + " to fade in over " + str(fade * self.modulator) + "s")
 
@@ -114,6 +119,7 @@ class CarpeDiem(hass.Hass):
 
     def reset(self, entity="", attribute="", old="", new="", kwargs=""):
         self.turn_off(self.args["switch"])
+        self.turn_off("input_boolean.carpemieke")
 
     def finished(self, entity="", attribute="", old="", new="", kwargs=""):
         self.turn_on("input_boolean.circadian") #Turn back on circadian
