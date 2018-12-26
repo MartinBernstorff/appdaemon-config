@@ -25,7 +25,7 @@ class CarpeDiem(hass.Hass):
         self.time = datetime.time(20, 0, 0)
         self.run_daily(self.reset, self.time)
 
-        self.modulator = 2
+        self.modulator = 1
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
@@ -33,47 +33,67 @@ class CarpeDiem(hass.Hass):
 
         self.global_vars["c_colortemp"] = 3000
 
-        self.run_in(self.carpe_monitor, self.modulator * 1)
-        self.run_in(self.carpe_bathroom, self.modulator * 1)
+        """ A list of lists containing:
+        Entity id, delay, fade duration
+        """
 
-        self.run_in(self.carpe_worklight, self.modulator * 9)
-        self.run_in(self.carpe_reol, self.modulator * 10)
+        lights = [
+            ["light.monitor", 1, 10],
+            ["light.bathroom_2", 1, 3],
+            ["light.color_temperature_light_1", 10, 20],
+            ["light.ikea_loft", 30, 15],
+            ["light.hallway_2", 30, 15],
+        ]
 
-        self.run_in(self.carpe_loft, self.modulator * 30)
+        duration = 0
 
-        self.run_in(self.finished, self.modulator * 240)
+        for light in lights:
+            self.run_in(self.light_controller, light[1], lt=light[0],
+                        fade=light[2])
 
-    def carpe_monitor(self, kwargs):
-        light = "light.monitor"
-        self.setstate(light, self.global_vars["c_brightness"], 20, color=self.global_vars["c_colortemp"]) #Circadian hue
+            light_duration = light[1] + light[2]
 
-    def carpe_bathroom(self, kwargs):
-        #Setup circadian dependencies
-        #Make short bathroom light var
-        light = "light.bathroom_2"
-        if self.now_is_between("04:00:00", "12:00:00"):
-            self.setstate(light, self.global_vars["c_brightness"], 5, self.global_vars["c_colortemp"]) #Circadian hue
+            if light_duration > duration:
+                duration = light_duration
 
-    def carpe_reol(self, kwargs):
-        #Make short reol light var
-        light = "light.color_temperature_light_1"
-        self.setstate(light, self.global_vars["c_brightness"], 40, self.global_vars["c_colortemp"]) #Circadian hue
+        self.run_in(self.finished, duration)
 
-    def carpe_loft(self, kwargs):
-        #Make short reol light var
-        light = "light.ikea_loft"
-        self.setstate(light, self.global_vars["c_brightness"], 40, self.global_vars["c_colortemp"]) #Circadian hue
+    def carpe_mieke(self, entity, attribute, old, new, kwargs):
+        self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
+        self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
 
-    def carpe_worklight(self, kwargs):
-        #Make short reol light var
-        light = "light.color_temperature_light_1_2"
-        self.setstate(light, self.global_vars["c_brightness"], 30, self.global_vars["c_colortemp"]) #Circadian hue
+        self.global_vars["c_colortemp"] = 2000
 
-    def carpe_hallway(self, kwargs):
-        #Make short reol light var
-        light = "light.hallway_2"
-        if self.now_is_between("04:00:00", "12:00:00"):
-            self.setstate(light, self.global_vars["c_brightness"], 30, self.global_vars["c_colortemp"]) #Circadian hue
+        """ A list of lists containing:
+        Entity id, delay, fade duration
+        """
+
+        lights = [
+            ["light.monitor", 1, 30],
+            ["light.bathroom_2", 1, 20],
+            ["light.color_temperature_light_1", 30, 180],
+            ["light.ikea_loft", 210, 300],
+            ["light.hallway_2", 60, 300],
+        ]
+
+        duration = 0
+
+        for light in lights:
+            self.run_in(self.light_controller, light[1], lt=light[0],
+                        fade=light[2])
+
+            light_duration = light[1] + light[2]
+
+            if light_duration > duration:
+                duration = light_duration
+
+        self.run_in(self.finished, duration)
+
+    def light_controller(self, kwargs):
+        self.setstate(lt=kwargs["lt"],
+                      brightness=self.global_vars["c_brightness"],
+                      fade=kwargs["fade"],
+                      color=self.global_vars["c_colortemp"])
 
     def setstate(self, lt, brightness, fade, color=""):
         switch = self.args["switch"]
