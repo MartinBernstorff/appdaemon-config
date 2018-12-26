@@ -40,12 +40,22 @@ class Sunrise(hass.Hass):
             self.alarm = self.run_daily(self.rise_instant, self.alarm_time)
 
     def rise_instant(self, entity="", attribute="", old="", new="", kwargs=""):
+<<<<<<< HEAD
         self.modifier = 1
+=======
+        self.modifier = 0.01
+>>>>>>> d45876c9ee7828604c90f0abf3efc3ac87fb52d5
         self.log("Rise_instant is running with switch {switch}, light {light} and modifier {modifier}".format(switch=self.switch, light=self.entity, modifier = self.modifier))
         # self.condseq_on(switch=self.switch, entity=self.entity, brightness=1, t_fade=1, color=conv.rgb_to_xy(255, 0, 0))
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=1, t_fade=10, color=3000)
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=15, t_fade=20, color=3000)
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=self.global_vars["c_brightness"], t_fade=570, color=3000)
+<<<<<<< HEAD
+=======
+        self.condseq_on(switch=self.switch, entity="light.color_temperature_light_1", brightness=self.global_vars["c_brightness"], t_fade=15, color=3000)
+        self.condseq_on(switch=self.switch, entity="light.hovedrum", brightness=self.global_vars["c_brightness"], t_fade=15, color=3000)
+        self.turn_on("input_boolean.circadian")
+>>>>>>> d45876c9ee7828604c90f0abf3efc3ac87fb52d5
 
     def rise_delay(self, entity="", attribute="", old="", new="", kwargs=""):
         self.modifier = 1
