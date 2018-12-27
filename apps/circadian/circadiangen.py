@@ -15,20 +15,25 @@ class CircadianGen(hass.Hass):
         self.now = self.datetime()
         b = self.now + datetime.timedelta(seconds=3)
 
+        self.gen_circ_brightness()
+        self.gen_circ_colortemp()
+
         #Setup the input_selects
         self.update_offset()
         self.listen_state(self.update_offset, "input_select.circadian_hour")
         self.listen_state(self.update_offset, "input_select.circadian_minute")
 
+        self.listen_state(self.gen_circ_colortemp, "input_boolean.circadian")
         self.listen_state(self.gen_circ_colortemp, "input_select.circadian_hour")
         self.listen_state(self.gen_circ_colortemp, "input_select.circadian_minute")
 
+        self.listen_state(self.gen_circ_brightness, "input_boolean.circadian")
         self.listen_state(self.gen_circ_brightness, "input_select.circadian_hour")
         self.listen_state(self.gen_circ_brightness, "input_select.circadian_minute")
 
         #Setup run_every
-        self.run_every(self.gen_circ_brightness, b, 60)
-        self.run_every(self.gen_circ_colortemp, b, 60)
+        self.run_every(self.gen_circ_brightness, b, 123)
+        self.run_every(self.gen_circ_colortemp, b, 127)
 
     def gen_circ_brightness(self, entity="", attribute="", old="", new="", kwargs=""):
         self.now = self.datetime()
@@ -52,7 +57,7 @@ class CircadianGen(hass.Hass):
         else:
             self.global_vars["c_brightness"] = 20
 
-        #self.log("Set new circ brightness {} at {}".format(self.global_vars["c_brightness"], self.now))
+        # self.log("Set new circ brightness {} at {}".format(self.global_vars["c_brightness"], self.now))
 
     def set_circ_brightness(self, endbness, startbness, endtime, starttime):
         base = 255
