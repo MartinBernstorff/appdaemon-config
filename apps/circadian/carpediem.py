@@ -91,10 +91,10 @@ class CarpeDiem(hass.Hass):
         self.run_in(self.finished, duration)
 
     def light_controller(self, kwargs):
-        if kwargs["switch"] is None:
-            switch = self.args["switch"]
-        else:
+        if "switch" in kwargs:
             switch = kwargs["switch"]
+        else:
+            switch = self.args["switch"]
 
         self.setstate(lt=kwargs["lt"],
                       brightness=self.global_vars["c_brightness"],
