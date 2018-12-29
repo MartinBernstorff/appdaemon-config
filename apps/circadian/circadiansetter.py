@@ -1,5 +1,6 @@
 import appdaemon.plugins.hass.hassapi as hass
 import datetime
+import globals as g
 
 #
 # Circadian app
@@ -12,7 +13,8 @@ class CircadianSetter(hass.Hass):
     lights = [["light.monitor", 1.8],
               ["light.bathroom_2", 1.4],
               ["light.color_temperature_light_1", 0.4],
-              ["light.ikea_loft", 0.6]]
+              ["light.ikea_loft", 0.6],
+              ["light.hallway_2", 1]]
 
     def initialize(self):
         #Get current time and small time delta to initiate run_every
@@ -37,13 +39,13 @@ class CircadianSetter(hass.Hass):
         if self.get_state("input_boolean.circadian") == "on" and self.get_state("input_select.context") == "Normal":
             for light in self.lights:
                 self.setlight(light[0], 120, light[1])
-            # self.log("Updating lights, time is {}, color temp is {} and brightness is {}".format(self.now.time(), self.global_vars["c_colortemp"], self.global_vars["c_brightness"]))
+            # self.log("Updating lights, time is {}, color temp is {} and brightness is {}".format(self.now.time(), g.c_colortemp, g.c_brightness))
         else:
             self.log("Circadian switch is off, lights not updated")
 
     def set_lights_quick(self, entity="", attribute="", old="", new="", kwargs=""):
         if self.get_state("input_boolean.circadian") == "on" and self.get_state("input_select.context") == "Normal":
-            self.log("Updating lights quickly,\n    Kelvin: {}\n    Brightness: {}".format(self.global_vars["c_colortemp"], self.global_vars["c_brightness"]))
+            self.log("Updating lights quickly,\n    Kelvin: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
             for light in self.lights:
                 self.setlight(light[0], 3, light[1])
         else:
@@ -56,15 +58,15 @@ class CircadianSetter(hass.Hass):
             if (light == "light.ikea_loft") or (light == "light.color_temperature_light_1"):
                 self.turn_on(light,
                              transition = transition,
-                             kelvin = (self.global_vars["c_colortemp"] - 400),
-                             brightness = modifier * self.global_vars["c_brightness"])
+                             kelvin = (g.c_colortemp - 400),
+                             brightness = modifier * g.c_brightness)
             elif light == "light.monitor":
                 self.turn_on(light,
                              transition = transition,
-                             kelvin = self.global_vars["c_colortemp"] - 400,
-                             brightness = modifier * (self.global_vars["c_brightness"]) + 60)
+                             kelvin = g.c_colortemp - 400,
+                             brightness = modifier * (g.c_brightness) + 60)
             else:
                 self.turn_on(light,
                              transition = transition,
-                             kelvin = self.global_vars["c_colortemp"],
-                             brightness = modifier * self.global_vars["c_brightness"])
+                             kelvin = g.c_colortemp,
+                             brightness = modifier * g.c_brightness)

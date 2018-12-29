@@ -4,11 +4,14 @@
 circadian_gen:
   module: circadiangen
   class: CircadianGen
+  dependencies: Utilities
+  constrain_input_boolean: input_boolean.circadian
 
 circadian_setter:
   module: circadiansetter
   class: CircadianSetter
   dependencies: circadian_gen
+  constrain_input_boolean: input_boolean.circadian
 
 sunrise:
   module: sunrise
@@ -20,6 +23,7 @@ carpe_diem:
   class: CarpeDiem
   switch: input_boolean.carpediem
   factor: input_select.carpediemfactor
+  dependencies: Utilities
 
 good_night:
   module: goodnight

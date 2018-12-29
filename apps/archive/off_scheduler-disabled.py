@@ -1,6 +1,7 @@
 import appdaemon.plugins.hass.hassapi as hass
 import time
 import datetime
+import globals as g
 
 """
  Off_scheduler
@@ -20,7 +21,7 @@ class OffScheduler(hass.Hass):
         self.entity = self.args["entity"]
 
         self.init = self.datetime().replace(hour=int(self.hour), minute=int(self.minute), second=0)
-        offset = self.global_vars["c_offset"]
+        offset = g.c_offset
         run_at = (self.init + offset).time()
 
         self.log("Initializing OffScheduler with params: \n          switch: {}\n          run_at: {}\n          entity: {}".format(self.switch, run_at, self.entity))
@@ -49,7 +50,7 @@ class OffScheduler(hass.Hass):
 
     def light_off(self, entity="", attribute="", old="", new="", kwargs=""):
         if self.get_state(self.entity) == "on":
-            self.turn_on(self.entity, transition = 30, kelvin = self.global_vars["c_colortemp"], brightness = 0)
+            self.turn_on(self.entity, transition = 30, kelvin = g.c_colortemp, brightness = 0)
             time.sleep(30)
             self.turn_off(self.entity)
         else:
@@ -58,7 +59,7 @@ class OffScheduler(hass.Hass):
     def update_time(self, entity="", attribute="", old="", new="", kwargs=""):
         self.cancel_timer(self.handle)
 
-        offset = self.global_vars["c_offset"]
+        offset = g.c_offset
         run_at = (self.init + offset).time()
 
         self.handle = self.run_daily(self.off, run_at)

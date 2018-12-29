@@ -1,4 +1,5 @@
 import appdaemon.plugins.hass.hassapi as hass
+import globals as g
 
 #
 # App to turn lights on when motion detected then off again after a delay
@@ -28,7 +29,7 @@ class DoorSensorMain(hass.Hass):
 
         # Check some Params
 
-        self.global_vars["door_opened_recently"] = 0
+        g.door_opened_recently = 0
 
         # Subscribe to sensors
         if "sensor" in self.args:
@@ -37,15 +38,15 @@ class DoorSensorMain(hass.Hass):
             self.log("No sensor specified, doing nothing")
 
     def opened(self, entity, attribute, old, new, kwargs):
-        if self.global_vars["door_opened_recently"] == 0:
-            self.global_vars["door_opened_recently"] = 1
+        if g.door_opened_recently == 0:
+            g.door_opened_recently = 1
 
             self.context = self.get_state("input_select.context")
 
             if self.context == "Away":
                 self.log("Door sensor turning on with context {}".format(self.context))
                 self.set_state("input_select.context", state = "Normal")
-                self.turn_on("light.hallway_2", transition = 0.5, kelvin = self.global_vars["c_colortemp"], brightness = 0.6 * self.global_vars["c_brightness"])
+                self.turn_on("light.hallway_2", transition = 0.5, kelvin = g.c_colortemp, brightness = 0.6 * g.c_brightness)
         else:
             self.log("Door was opened recently, not firing script again.")
 
@@ -55,7 +56,7 @@ class DoorSensorMain(hass.Hass):
 
     def delay_end(self, kwargs):
         self.log("Timer ended, setting door_opened_recently to 0")
-        self.global_vars["door_opened_recently"] = 0
+        g.door_opened_recently = 0
 
     def cancel(self):
         self.cancel_timer(self.handle)

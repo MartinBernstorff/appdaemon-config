@@ -2,6 +2,7 @@ import appdaemon.plugins.hass.hassapi as hass
 import circadiangen
 import time
 import datetime
+import globals as g
 
 #
 # Carpediem app
@@ -21,7 +22,7 @@ class Away(hass.Hass):
             self.log("Aborting Away script, input_select.context == {}".format(self.get_state("input_select.context")))
 
         # Prevent Normal from firing
-        self.global_vars["door_opened_recently"] = 1
+        g.door_opened_recently = 1
         if self.get_state("input_select.context") == "Away":
             self.turn_off("group.all_lights")
             self.turn_off("media_player.pioneer")

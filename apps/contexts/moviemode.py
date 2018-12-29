@@ -2,6 +2,7 @@ import appdaemon.plugins.hass.hassapi as hass
 import circadiangen
 import time
 import datetime
+import globals as g
 
 #
 # Carpediem app
@@ -84,9 +85,9 @@ class MovieMode(hass.Hass):
             self.call_service("media_player/media_stop", entity_id = "media_player.rasplex")
         else: # Slower fade, if switch is turned off during credits
             self.log("Rasplex playing, slow fade")
-            self.setstate("light.monitor", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
-            self.setstate("light.color_temperature_light_1", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
-            self.setstate("light.ikea_loft", self.global_vars["c_brightness"], 80, self.global_vars["c_colortemp"])
+            self.setstate("light.monitor", g.c_brightness, 80, g.c_colortemp)
+            self.setstate("light.color_temperature_light_1", g.c_brightness, 80, g.c_colortemp)
+            self.setstate("light.ikea_loft", g.c_brightness, 80, g.c_colortemp)
 
             vollevel = self.get_state("media_player.pioneer", "volume_level")
 
@@ -111,8 +112,8 @@ class MovieMode(hass.Hass):
         self.log("Activating paused actions at {}".format(self.time()))
 
         if self.get_state("input_select.context") == "Movie-mode":
-            self.setstate("light.monitor", 100, 10, self.global_vars["c_colortemp"])
-            self.setstate("light.color_temperature_light_1", 1, 10, self.global_vars["c_colortemp"])
+            self.setstate("light.monitor", 100, 10, g.c_colortemp)
+            self.setstate("light.color_temperature_light_1", 1, 10, g.c_colortemp)
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1

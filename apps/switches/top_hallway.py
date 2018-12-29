@@ -2,6 +2,7 @@ import appdaemon.plugins.hass.hassapi as hass
 import circadiangen
 import time
 import datetime
+import globals as g
 
 #
 # Carpediem app
@@ -24,7 +25,7 @@ class TopHallway(hass.Hass):
         if self.get_state("input_select.context") != "Away":
             self.set_state("input_select.context", state = "Away")
         else:
-            self.global_vars["door_opened_recently"] = 1
+            g.door_opened_recently = 1
             self.set_state("input_select.context", state = "Normal")
 
     def double_click(self, entity, attribute, old, new="", kwargs=""):

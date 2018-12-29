@@ -2,6 +2,7 @@ import appdaemon.plugins.hass.hassapi as hass
 import time
 import datetime
 from rgb_xy import Converter
+import globals as g
 
 conv = Converter()
 
@@ -45,9 +46,9 @@ class Sunrise(hass.Hass):
         # self.condseq_on(switch=self.switch, entity=self.entity, brightness=1, t_fade=1, color=conv.rgb_to_xy(255, 0, 0))
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=1, t_fade=10, color=3000)
         self.condseq_on(switch=self.switch, entity="light.monitor", brightness=15, t_fade=20, color=3000)
-        self.condseq_on(switch=self.switch, entity="light.monitor", brightness=self.global_vars["c_brightness"], t_fade=570, color=3000)
-        self.condseq_on(switch=self.switch, entity="light.color_temperature_light_1", brightness=self.global_vars["c_brightness"], t_fade=15, color=3000)
-        self.condseq_on(switch=self.switch, entity="light.hovedrum", brightness=self.global_vars["c_brightness"], t_fade=15, color=3000)
+        self.condseq_on(switch=self.switch, entity="light.monitor", brightness=g.c_brightness, t_fade=570, color=3000)
+        self.condseq_on(switch=self.switch, entity="light.color_temperature_light_1", brightness=g.c_brightness, t_fade=15, color=3000)
+        self.condseq_on(switch=self.switch, entity="light.hovedrum", brightness=g.c_brightness, t_fade=15, color=3000)
         self.turn_on("input_boolean.circadian")
 
     def rise_delay(self, entity="", attribute="", old="", new="", kwargs=""):

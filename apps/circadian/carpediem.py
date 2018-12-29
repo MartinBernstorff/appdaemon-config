@@ -1,6 +1,7 @@
 import time
 import datetime
 import appdaemon.plugins.hass.hassapi as hass
+import globals as g
 
 #
 # Carpediem app
@@ -25,13 +26,13 @@ class CarpeDiem(hass.Hass):
         self.time = datetime.time(20, 0, 0)
         self.run_daily(self.reset, self.time)
 
-        self.modulator = 1
+        self.modulator = 0.1
+
+        self.utils = self.get_app("Utilities")
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
-
-        self.global_vars["c_colortemp"] = 3000
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -48,13 +49,15 @@ class CarpeDiem(hass.Hass):
         duration = 0
 
         for light in lights:
-            self.run_in(self.light_controller, light[1], lt=light[0],
+            self.run_in(self.light_controller,
+                        light[1] * self.modulator,
+                        lt=light[0],
                         fade=light[2])
 
             light_duration = light[1] + light[2]
 
             if light_duration > duration:
-                duration = light_duration
+                duration = light_duration * self.modulator
 
         self.run_in(self.finished, duration)
 
@@ -63,7 +66,7 @@ class CarpeDiem(hass.Hass):
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
         self.log("Starting carpe-Mieke")
 
-        self.global_vars["c_colortemp"] = 2500
+        g.c_colortemp = 2000
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -77,16 +80,19 @@ class CarpeDiem(hass.Hass):
             ["light.hallway_2", 60, 300],
         ]
 
-        duration = 0
+        duration = 0  * self.modulator
 
         for light in lights:
-            self.run_in(self.light_controller, light[1], lt=light[0],
-                        fade=light[2], switch="input_boolean.carpemieke")
+            self.run_in(self.light_controller,
+                        light[1] * self.modulator,
+                        lt=light[0],
+                        fade=light[2], 
+                        switch="input_boolean.carpemieke")
 
             light_duration = light[1] + light[2]
 
             if light_duration > duration:
-                duration = light_duration
+                duration = light_duration * self.modulator
 
         self.run_in(self.finished, duration)
 
@@ -97,14 +103,14 @@ class CarpeDiem(hass.Hass):
             switch = self.args["switch"]
 
         self.setstate(lt=kwargs["lt"],
-                      brightness=self.global_vars["c_brightness"],
+                      brightness=g.c_brightness,
                       fade=kwargs["fade"],
-                      color=self.global_vars["c_colortemp"],
+                      color=g.c_colortemp,
                       switch=switch)
 
     def setstate(self, lt, brightness, fade, switch, color=""):
         if self.get_state(switch) == "on":
-            self.log("Set " + lt + " to fade in over " + str(fade * self.modulator) + "s")
+            self.log("Set " + lt + " to fade in over " + str(fade * self.modulator) + "s with \n     Brightness: {}\n     Kelvin: {}".format(brightness, color))
 
             if self.get_state(switch) == "on":
                 if color != "":
