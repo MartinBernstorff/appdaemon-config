@@ -32,7 +32,6 @@ good_night:
   devices:
     - group.all_lights
     - media_player.pioneer
-    - input_boolean.mm
     - input_boolean.circadian
     - input_boolean.sunrise
     - input_boolean.carpediem
