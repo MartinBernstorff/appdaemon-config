@@ -8,6 +8,7 @@ circadian_gen:
 circadian_setter:
   module: circadiansetter
   class: CircadianSetter
+  dependencies: circadian_gen
 
 sunrise:
   module: sunrise
