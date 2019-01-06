@@ -26,17 +26,19 @@ class CarpeDiem(hass.Hass):
         self.time = datetime.time(20, 0, 0)
         self.run_daily(self.reset, self.time)
 
-        self.modulator = 0.1
+        self.modulator = 1
 
         self.utils = self.get_app("Utilities")
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
-        if self.get_state("device_tracker.miekes_iphone") == "home":
-            self.carpe_mieke
+        if self.get_state("device_tracker.iphonevanmieke") == "home":
+            self.carpe_mieke()
             return
 
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
+
+        g.c_colortemp = 3000
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -45,9 +47,9 @@ class CarpeDiem(hass.Hass):
         lights = [
             ["light.monitor", 1, 10],
             ["light.bathroom_2", 1, 3],
-            ["light.color_temperature_light_1", 10, 20],
-            ["light.ikea_loft", 30, 15],
-            ["light.hallway_2", 30, 15],
+            ["light.color_temperature_light_1", 20, 20],
+            ["light.ikea_loft", 45, 20],
+            ["light.hallway_2", 5, 80],
         ]
 
         duration = 0
@@ -58,12 +60,12 @@ class CarpeDiem(hass.Hass):
                         lt=light[0],
                         fade=light[2])
 
-            light_duration = light[1] + light[2]
+            light_duration = (light[1] + light[2]) * self.modulator
 
             if light_duration > duration:
                 duration = light_duration * self.modulator
 
-        self.run_in(self.finished, duration)
+        self.run_in(self.finished, duration + 10)
 
     def carpe_mieke(self, entity, attribute, old, new, kwargs):
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
@@ -79,7 +81,7 @@ class CarpeDiem(hass.Hass):
         lights = [
             ["light.monitor", 1, 30],
             ["light.bathroom_2", 1, 20],
-            ["light.color_temperature_light_1", 30, 180],
+            ["light.color_temperature_light_1", 60, 180],
             ["light.ikea_loft", 210, 300],
             ["light.hallway_2", 60, 300],
         ]
@@ -132,6 +134,12 @@ class CarpeDiem(hass.Hass):
         self.turn_off("input_boolean.carpemieke")
 
     def finished(self, entity="", attribute="", old="", new="", kwargs=""):
-        self.turn_on("input_boolean.circadian") #Turn back on circadian
-        self.set_state("input_select.context", state = "Normal")
-        self.reset()
+        if self.get_state(self.args["switch"]) == "on":
+            self.turn_on("input_boolean.circadian") #Turn back on circadian
+            self.set_state("input_select.context", state = "Normal")
+            self.reset()
+        elif self.get_state("input_boolean.carpemieke") == "on":
+            self.set_state("input_select.context", state = "Cozy")
+            self.reset()
+        else:
+            self.log("Switch is off, not running finished")
