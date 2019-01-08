@@ -19,12 +19,22 @@ class Normal(hass.Hass):
 
     def on(self, entity, attribute, old, new, kwargs):
         self.log("New context is Normal, turning on lights")
-        self.brightness = g.c_brightness
-        self.kelvin = g.c_colortemp
 
-        self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(self.kelvin, self.brightness))
-        self.turn_on("light.ikea_loft", transition = 1, kelvin = self.kelvin, brightness = 0.6 * self.brightness)
-        self.turn_on("light.color_temperature_light_1", transition = 1, kelvin = self.kelvin, brightness = 0.4 * self.brightness)
-        self.turn_on("light.color_temperature_light_1_2", transition = 1, kelvin = self.kelvin, brightness = 0.2 * self.brightness)
-        self.turn_on("light.monitor", transition = 1, kelvin = self.kelvin, brightness = 1.6 * self.brightness)
+        self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
+
+        lights = ["light.ikea_loft",
+                  "light.color_temperature_light_1",
+                  "light.color_temperature_light_1_2",
+                  "light.monitor"
+                  ]
+
+        for light in lights:
+            self.turn_on(light,
+                         transition = 1,
+                         kelvin = g.c_colortemp,
+                         brightness = g.c_brightness)
+            time.sleep(0.2)
+
+        self.turn_off("input_boolean.circadian")
+        time.sleep(1)
         self.turn_on("input_boolean.circadian")

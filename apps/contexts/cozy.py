@@ -3,6 +3,7 @@ import circadiangen
 import time
 import datetime
 from time import sleep
+import globals as g
 
 #
 # Carpediem app
@@ -16,28 +17,41 @@ class Cozy(hass.Hass):
         self.log("Initializing {} with switch: {}".format(__name__, self.args["switch"]))
 
         self.listen_state(self.on, "input_select.context", new = "Cozy")
+        self.listen_state(self.leaving, "input_select.context", old = "Cozy")
 
     def on(self, entity, attribute, old, new, kwargs):
         self.turn_off("light.ikea_loft")
-        self.setstate("light.hallway_2", 1, 1, 2300)
-        self.setstate("light.monitor", 125, 1, 2300)
-        self.setstate("light.color_temperature_light_1", 50, 1, 2300)
+        g.c_colortemp = 2300
+        self.setstate("light.hallway_2", 1, 1, g.c_colortemp)
+        self.setstate("light.monitor", 125, 1, g.c_colortemp)
+        self.setstate("light.color_temperature_light_1", 50, 1, g.c_colortemp)
         self.turn_on("media_player.pioneer")
 
-        sleep(10)
-        self.call_service("media_player/select_source",
-                          entity_id = "media_player.pioneer",
-                          source = "CHROME")
+        sleep(2)
 
-        for i in range(0, 5):
-            self.call_service("media_player/volume_set",
-                              entity_id = "media_player.pioneer",
-                              volume_level = "0.6648")
-            sleep(3)
-            self.call_service("media_player/select_source",
-                              entity_id = "media_player.pioneer",
-                              source = "CHROME")
-            sleep(3)
+        n = 0
+
+        for i in range(0, 10):
+            if self.get_state("media_player.pioneer") == "on":
+                if n < 2:
+                    self.call_service("media_player/volume_set",
+                                      entity_id = "media_player.pioneer",
+                                      volume_level = "0.32")
+                    sleep(1)
+                    self.call_service("media_player/select_source",
+                                      entity_id = "media_player.pioneer",
+                                      source = "CHROME")
+                    sleep(1)
+                    n += 1
+            else:
+                self.call_service("media_player/select_source",
+                                  entity_id = "media_player.pioneer",
+                                  source = "CHROME")
+                self.log("Pioneer not on, re-powering and sleeping for 3s")
+                sleep(3)
+
+    def leaving(self, entity, attribute, old, new, kwargs):
+        self.turn_off("media_player.pioneer")
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1
