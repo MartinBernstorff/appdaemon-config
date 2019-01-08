@@ -62,3 +62,5 @@ class Cozy(hass.Hass):
             self.turn_on(lt, brightness = bness, transition = self.modulator * fade, kelvin = color)
         else:
             self.turn_on(lt, brightness = bness, transition = self.modulator * fade)
+
+# Random feature test
