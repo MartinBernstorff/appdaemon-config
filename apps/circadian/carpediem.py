@@ -32,13 +32,14 @@ class CarpeDiem(hass.Hass):
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
         if self.get_state("device_tracker.iphonevanmieke") == "home":
-            self.carpe_mieke()
+            self.turn_on("input_boolean.carpemieke")
             return
 
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
 
         g.c_colortemp = 3000
+        g.c_brightness = 655
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -73,6 +74,7 @@ class CarpeDiem(hass.Hass):
         self.log("Starting carpe-Mieke")
 
         g.c_colortemp = 2000
+        g.c_brightness = 655
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -136,6 +138,7 @@ class CarpeDiem(hass.Hass):
     def finished(self, entity="", attribute="", old="", new="", kwargs=""):
         if self.get_state(self.args["switch"]) == "on":
             self.turn_on("input_boolean.circadian") #Turn back on circadian
+            time.sleep(2)
             self.set_state("input_select.context", state = "Normal")
             self.reset()
         elif self.get_state("input_boolean.carpemieke") == "on":
