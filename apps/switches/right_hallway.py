@@ -21,6 +21,7 @@ class RightHallway(hass.Hass):
         self.listen_event(self.long_click_press, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a251", click_type = "long_click_press")
 
     def single_click(self, entity, attribute, old, new="", kwargs=""):
+        self.log("Right-hallway pressed!")
         # Define context-specific actions
         if self.get_state("input_select.context") == "Normal":
             if self.get_state("light.bathroom_2") != "on":
@@ -49,9 +50,10 @@ class RightHallway(hass.Hass):
                 self.turn_on("light.bathroom_2")
 
     def double_click(self, entity, attribute, old, new="", kwargs=""):
-        self.log("Double-click!")
+        self.log("Right-hallway double-clicked!")
 
     def long_click_press(self, entity, attribute, old, new="", kwargs=""):
+        self.log("Right-hallway long_pressed!")
         self.log("{} turned {}".format(entity, new))
         if self.get_state("input_select.context") != "Pre-sleep":
             self.set_state("input_select.context", state="Pre-sleep")
