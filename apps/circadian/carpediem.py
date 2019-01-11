@@ -40,6 +40,7 @@ class CarpeDiem(hass.Hass):
 
         g.c_colortemp = 3000
         g.c_brightness = 655
+        g.persistent_hallway_light = True
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -75,6 +76,7 @@ class CarpeDiem(hass.Hass):
 
         g.c_colortemp = 2000
         g.c_brightness = 655
+        g.persistent_hallway_light = True
 
         """ A list of lists containing:
         Entity id, delay, fade duration

@@ -59,7 +59,10 @@ class MotionSensor(hass.Hass):
     def light_off(self, kwargs):
         if self.get_state("light.bathroom_2") == "on":
             self.cancel_timer(self.handle)
-            self.handle = self.run_in(self.light_off, 10)
+            self.handle = self.run_in(self.light_off, 120)
+        elif g.persistent_hallway_light == True:
+            self.cancel_timer(self.handle)
+            print("Persistent hallway light: {}".format(g.persistent_hallway_light))
         else:
             self.turn_off("light.hallway_2")
 

@@ -23,6 +23,10 @@ class Away(hass.Hass):
 
         # Prevent Normal from firing
         g.door_opened_recently = 1
+
+        # Reset persistent lights
+        g.persistent_hallway_light = False
+
         if self.get_state("input_select.context") == "Away":
             self.turn_off("group.all_lights")
             self.turn_off("media_player.pioneer")
