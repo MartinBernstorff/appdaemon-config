@@ -83,13 +83,13 @@ class CircadianGen(hass.Hass):
         if self.now > t0 and self.now <= t1:
             self.set_c_colortemp(1000, 1000, t0, t1)
         elif self.now > t1 and self.now <= t2:
-            self.set_c_colortemp(2000, 5000, t1, t2)
+            self.set_c_colortemp(2000, 4000, t1, t2)
         elif self.now > t2 and self.now <= t3:
-            self.set_c_colortemp(5000, 5000, t2, t3)
+            self.set_c_colortemp(4000, 4000, t2, t3)
         elif self.now > t3 and self.now <= t4:
-            self.set_c_colortemp(5000, 2500, t3, t4)
+            self.set_c_colortemp(4000, 2500, t3, t4)
         elif self.now > t4 and self.now <= t5:
-            self.set_c_colortemp(3000, 1000, t4, t5)
+            self.set_c_colortemp(2500, 1000, t4, t5)
         else:
             g.c_colortemp = 1000
 
