@@ -138,13 +138,13 @@ class CarpeDiem(hass.Hass):
         self.turn_off("input_boolean.carpemieke")
 
     def finished(self, entity="", attribute="", old="", new="", kwargs=""):
-        if self.get_state(self.args["switch"]) == "on":
-            self.turn_on("input_boolean.circadian") #Turn back on circadian
-            time.sleep(2)
-            self.set_state("input_select.context", state = "Normal")
-            self.reset()
-        elif self.get_state("input_boolean.carpemieke") == "on":
-            self.set_state("input_select.context", state = "Cozy")
+        if self.get_state(self.args["switch"]) == "on" or self.get_state("input_boolean.carpemieke") == "on": # Check if scripts have been cancelled
+            if self.get_state("device_tracker.iphonevanmieke") == "home":
+                pass
+            else:
+                self.turn_on("input_boolean.circadian") #Turn back on circadian
+                time.sleep(2)
+                self.set_state("input_select.context", state = "Normal")
             self.reset()
         else:
             self.log("Switch is off, not running finished")
