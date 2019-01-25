@@ -24,7 +24,6 @@ import globals as g
 class MotionSensor(hass.Hass):
 
     def initialize(self):
-
         self.handle = None
 
         # Check some Params
@@ -37,20 +36,21 @@ class MotionSensor(hass.Hass):
 
     def motion(self, entity, attribute, old, new, kwargs):
         if new == "on":
+            self.disabled_contexts = ["Pre-sleep", "Asleep", "Away"]
             self.context = self.get_state("input_select.context")
             self.log("Motion sensor activated with context {}".format(self.context))
-            if self.context == "Normal":
-                self.turn_on("light.hallway_2", transition = 0.5, kelvin = g.c_colortemp - 300, brightness = 0.6 * g.c_brightness)
+
+            if self.context in self.disabled_contexts:
+                self.log("Motion sensor disabled in context {}".format(self.context))
 
             elif self.context == "Cozy":
-                self.turn_on("light.hallway_2", transition = 1, kelvin = 2000, brightness = 80)
+                self.turn_on("light.hallway_2", transition = 1, kelvin = 2000,
+                             brightness = 80)
 
-            elif self.context == "Movie-mode":
-                if self.get_state("input_select.playing_state") == "paused":
-                    self.turn_on("light.hallway_2", kelvin = g.c_colortemp, transition = 0.5, brightness = 150)
-                    self.turn_on("light.bathroom_2", transition = 0.5, kelvin = g.c_colortemp, brightness = g.c_brightness)
-                elif self.get_state("input_select.playing_state") == "playing":
-                    self.turn_on("light.hallway_2", transition = 0.5, kelvin = g.c_colortemp, brightness = 1)
+            else:
+                self.turn_on("light.hallway_2", transition = 1,
+                             kelvin = g.c_colortemp - 300,
+                             brightness = 0.6 * g.c_brightness)
 
             delay = 300
             self.cancel_timer(self.handle)
