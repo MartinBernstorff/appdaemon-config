@@ -22,9 +22,9 @@ class Normal(hass.Hass):
 
         self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
 
-        lights = ["light.ikea_loft",
-                  "light.color_temperature_light_1",
-                  "light.color_temperature_light_1_2",
+        lights = ["light.loft_2",
+                  "light.reol_2",
+                  "light.reol_2_2",
                   "light.monitor"
                   ]
 

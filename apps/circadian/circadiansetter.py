@@ -12,9 +12,9 @@ class CircadianSetter(hass.Hass):
     # List of lights with entity_id, brightness coefficient
     lights = [["light.monitor", 1.8],
               ["light.bathroom_2", 1.4],
-              ["light.color_temperature_light_1", 0.4],
-              ["light.ikea_loft", 0.6],
-              ["light.hallway_2", 1]]
+              ["light.reol_2", 0.4],
+              ["light.loft_2", 0.6],
+              ["light.gang", 1]]
 
     def initialize(self):
         #Get current time and small time delta to initiate run_every
@@ -55,7 +55,7 @@ class CircadianSetter(hass.Hass):
     def setlight(self, light, transition, modifier):
         if self.get_state(light) == "on":
             self.log("Adjusting {}".format(light))
-            if (light == "light.ikea_loft") or (light == "light.color_temperature_light_1"):
+            if (light == "light.loft_2") or (light == "light.reol_2"):
                 self.turn_on(light,
                              transition = transition,
                              kelvin = (g.c_colortemp - 400),

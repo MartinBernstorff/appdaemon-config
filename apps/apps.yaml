@@ -106,7 +106,7 @@ Reol_off:
   switch: input_boolean.circadian
   hour: 21
   minute: 05
-  entity: light.color_temperature_light_1
+  entity: light.reol_2
 
 Loft_off:
   module: off_scheduler
@@ -114,7 +114,7 @@ Loft_off:
   switch: input_boolean.circadian
   hour: 21
   minute: 05
-  entity: light.ikea_loft
+  entity: light.loft_2
 
 Circadian_off:
   module: off_scheduler

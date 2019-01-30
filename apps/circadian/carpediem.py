@@ -49,9 +49,9 @@ class CarpeDiem(hass.Hass):
         lights = [
             ["light.monitor", 1, 10],
             ["light.bathroom_2", 1, 3],
-            ["light.color_temperature_light_1", 20, 20],
-            ["light.ikea_loft", 45, 20],
-            ["light.hallway_2", 5, 80],
+            ["light.reol_2", 20, 20],
+            ["light.loft_2", 45, 20],
+            ["light.gang", 5, 80],
         ]
 
         duration = 0
@@ -85,9 +85,9 @@ class CarpeDiem(hass.Hass):
         lights = [
             ["light.monitor", 1, 30],
             ["light.bathroom_2", 1, 20],
-            ["light.color_temperature_light_1", 60, 180],
-            ["light.ikea_loft", 210, 300],
-            ["light.hallway_2", 60, 300],
+            ["light.reol_2", 60, 180],
+            ["light.loft_2", 210, 300],
+            ["light.gang", 60, 300],
         ]
 
         duration = 0  * self.modulator

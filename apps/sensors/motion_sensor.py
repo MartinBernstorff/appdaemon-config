@@ -44,11 +44,11 @@ class MotionSensor(hass.Hass):
                 self.log("Motion sensor disabled in context {}".format(self.context))
 
             elif self.context == "Cozy":
-                self.turn_on("light.hallway_2", transition = 1, kelvin = 2000,
+                self.turn_on("light.gang", transition = 1, kelvin = 2000,
                              brightness = 80)
 
             else:
-                self.turn_on("light.hallway_2", transition = 1,
+                self.turn_on("light.gang", transition = 1,
                              kelvin = g.c_colortemp - 300,
                              brightness = 0.6 * g.c_brightness)
 
@@ -64,7 +64,7 @@ class MotionSensor(hass.Hass):
             self.cancel_timer(self.handle)
             print("Persistent hallway light: {}".format(g.persistent_hallway_light))
         else:
-            self.turn_off("light.hallway_2")
+            self.turn_off("light.gang")
 
     def cancel(self):
         self.cancel_timer(self.handle)

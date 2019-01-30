@@ -94,7 +94,7 @@ class CircadianGen(hass.Hass):
         t0 = self.now.replace(hour=0, minute=0, second=0) + g.c_offset
         t1 = self.now.replace(hour=5, minute=1, second=0) + g.c_offset
         t2 = self.now.replace(hour=9, minute=0, second=0) + g.c_offset
-        t3 = self.now.replace(hour=18, minute=0, second=0) + g.c_offset
+        t3 = self.now.replace(hour=17, minute=30, second=0) + g.c_offset
         t4 = self.now.replace(hour=19, minute=45, second=0) + g.c_offset
         t5 = self.now.replace(hour=20, minute=15, second=0) + g.c_offset
 
@@ -105,9 +105,9 @@ class CircadianGen(hass.Hass):
         elif self.now > t2 and self.now <= t3:
             self.set_c_colortemp(5250, 5250, t2, t3)
         elif self.now > t3 and self.now <= t4:
-            self.set_c_colortemp(5250, 2500, t3, t4)
+            self.set_c_colortemp(5250, 2000, t3, t4)
         elif self.now > t4 and self.now <= t5:
-            self.set_c_colortemp(2500, 1000, t4, t5)
+            self.set_c_colortemp(2000, 1000, t4, t5)
         else:
             g.c_colortemp = 1000
 
@@ -118,6 +118,8 @@ class CircadianGen(hass.Hass):
         self.colortemp = starttemp + (endtemp - starttemp) * position / fadelength
 
         g.c_colortemp = self.colortemp
+
+        self.log("g.c_brightness = {}".format(g.c_brightness))
 
         #self.log("Set new colortemp {} at {}".format(g.c_colortemp, self.time()))
 

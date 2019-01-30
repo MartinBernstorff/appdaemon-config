@@ -20,11 +20,13 @@ class Cozy(hass.Hass):
         self.listen_state(self.leaving, "input_select.context", old = "Cozy")
 
     def on(self, entity, attribute, old, new, kwargs):
-        self.turn_off("light.ikea_loft")
+        self.turn_off("light.loft_2")
+        self.turn_on("switch.vindue")
+        self.turn_on("switch.seng")
         g.c_colortemp = 2300
-        self.setstate("light.hallway_2", 1, 1, g.c_colortemp)
+        self.setstate("light.gang", 1, 1, g.c_colortemp)
         self.setstate("light.monitor", 125, 1, g.c_colortemp)
-        self.setstate("light.color_temperature_light_1", 50, 1, g.c_colortemp)
+        self.setstate("light.reol_2", 50, 1, g.c_colortemp)
         self.turn_on("media_player.pioneer")
 
         sleep(2)
@@ -52,6 +54,8 @@ class Cozy(hass.Hass):
 
     def leaving(self, entity, attribute, old, new, kwargs):
         self.turn_off("media_player.pioneer")
+        self.turn_off("switch.vindue")
+        self.turn_off("switch.seng")
 
     def setstate(self, lt, bness, fade, color=""):
         self.modulator = 1
