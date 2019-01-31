@@ -67,7 +67,7 @@ class CircadianGen(hass.Hass):
                 self.log("First time, continuing")
 
             elif self.now > self.previous_datetime and self.now <= current_datetime:
-                self.log("Time is between {} and {}".format(self.previous_datetime, current_datetime))
+                self.log("Brightness time is between {} and {}".format(self.previous_datetime, current_datetime))
                 self.set_c_brightness(current_brightness, self.previous_brightness,
                                       current_datetime, self.previous_datetime)
             else:
@@ -87,31 +87,50 @@ class CircadianGen(hass.Hass):
 
         g.c_brightness = (start + (end - start) * position / fadelength) * base
 
-        self.log("g.c_brightness = {}".format(g.c_brightness))
+        # self.log("\nstartbness: {}\nendbness: {}\nFadelength: {}\nPosition: {}\ng.c_brightness: {}".format(startbness, endbness, fadelength, position, g.c_brightness))
 
     def gen_c_colortemp(self, entity="", attribute="", old="", new="", kwargs=""):
         self.now = self.datetime()
-        t0 = self.now.replace(hour=0, minute=0, second=0) + g.c_offset
-        t1 = self.now.replace(hour=5, minute=1, second=0) + g.c_offset
-        t2 = self.now.replace(hour=9, minute=0, second=0) + g.c_offset
-        t3 = self.now.replace(hour=17, minute=30, second=0) + g.c_offset
-        t4 = self.now.replace(hour=19, minute=45, second=0) + g.c_offset
-        t5 = self.now.replace(hour=20, minute=15, second=0) + g.c_offset
 
-        if self.now > t0 and self.now <= t1:
-            self.set_c_colortemp(1000, 1000, t0, t1)
-        elif self.now > t1 and self.now <= t2:
-            self.set_c_colortemp(2000, 5250, t1, t2)
-        elif self.now > t2 and self.now <= t3:
-            self.set_c_colortemp(5250, 5250, t2, t3)
-        elif self.now > t3 and self.now <= t4:
-            self.set_c_colortemp(5250, 2000, t3, t4)
-        elif self.now > t4 and self.now <= t5:
-            self.set_c_colortemp(2000, 1000, t4, t5)
-        else:
-            g.c_colortemp = 1000
+        times = [
+            ["00:00:00", 1000],
+            ["05:01:00", 2000],
+            ["11:00:00", 5250],
+            ["17:30:00", 5250],
+            ["19:45:00", 2000],
+            ["20:15:00", 1000],
+            ["23:59:59", 1000]
+        ]
 
-    def set_c_colortemp(self, starttemp, endtemp, starttime, endtime):
+        self.previous_colortemp_time_str = None
+        self.previous_colortemp_datetime = None
+        self.previous_colortemp = None
+
+        self.i = 0
+
+        for time in times:
+            current_date_str = str(self.now.day) + "/" + str(self.now.month) + "/" + str(self.now.year)
+            current_datetime = datetime.datetime.strptime(current_date_str + " " + time[0],
+                                                 "%d/%m/%Y %H:%M:%S") + g.c_offset
+            current_colortemp = time[1]
+
+            if self.i == 0:
+                self.log("First time, continuing")
+
+            elif self.now > self.previous_colortemp_datetime and self.now <= current_datetime:
+                self.log("Colortemp time is between {} and {}".format(self.previous_colortemp_datetime, current_datetime))
+                self.set_c_colortemp(current_colortemp, self.previous_colortemp,
+                                      current_datetime, self.previous_colortemp_datetime)
+            else:
+                pass
+
+            self.previous_colortemp_time_str = time[0]
+            self.previous_colortemp_datetime = current_datetime
+            self.previous_colortemp = time[1]
+            self.i += 1
+
+    def set_c_colortemp(self, endtemp, starttemp, endtime, starttime):
+
         fadelength = (endtime-starttime).seconds
         position = (self.now-starttime).seconds
 
@@ -119,9 +138,7 @@ class CircadianGen(hass.Hass):
 
         g.c_colortemp = self.colortemp
 
-        self.log("g.c_brightness = {}".format(g.c_brightness))
-
-        #self.log("Set new colortemp {} at {}".format(g.c_colortemp, self.time()))
+        # self.log("\nStarttemp: {}\nEndtemp: {}\nFadelength: {}\nPosition: {}\ng.c_colortemp: {}".format(starttemp, endtemp, fadelength, position, g.c_colortemp))
 
     def update_offset(self, entity="", attribute="", old="", new="", kwargs=""):
         self.hour = int(self.get_state("input_select.circadian_hour"))
