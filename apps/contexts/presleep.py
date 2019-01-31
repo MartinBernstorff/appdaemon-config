@@ -21,9 +21,8 @@ class PreSleep(hass.Hass):
         self.turn_on("light.monitor", xy_color = [0.6948, 0.3002], brightness = "60")
         self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "1")
 
-        lights = ["color_temperature_light_1",
-                  "color_temperature_light_1_2", "fishbowl",
-                  "gateway_light_286c07f0bbf5",
-                  "hallway", "hallway_2", "ikea_loft"]
+        lights = ["loft_2",
+                  "reol_2",
+                  "gang"]
         for light in lights:
             self.turn_off("light.{}".format(light))
