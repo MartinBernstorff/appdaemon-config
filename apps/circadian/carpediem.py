@@ -38,6 +38,8 @@ class CarpeDiem(hass.Hass):
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
 
+        g.c_colortemp = 4000
+        g.c_brightness = 655
         g.persistent_hallway_light = True
 
         """ A list of lists containing:
