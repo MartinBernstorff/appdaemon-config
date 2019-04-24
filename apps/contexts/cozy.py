@@ -21,12 +21,13 @@ class Cozy(hass.Hass):
 
     def on(self, entity, attribute, old, new, kwargs):
         self.turn_off("light.loft_2")
+        self.turn_off("light.reol_2")
         self.turn_on("switch.vindue")
         self.turn_on("switch.seng")
         g.c_colortemp = 2300
         self.setstate("light.gang", 1, 1, g.c_colortemp)
         self.setstate("light.monitor", 125, 1, g.c_colortemp)
-        self.setstate("light.reol_2", 50, 1, g.c_colortemp)
+        self.turn_off("input_boolean.circadian")
         self.turn_on("media_player.pioneer")
 
         sleep(2)
