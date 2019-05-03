@@ -24,7 +24,6 @@ class Normal(hass.Hass):
 
         lights = ["light.loft_2",
                   "light.reol_2",
-                  "light.reol_2_2",
                   "light.monitor"
                   ]
 
