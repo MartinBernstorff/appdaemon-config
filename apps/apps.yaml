@@ -42,32 +42,37 @@ good_night:
 Movie mode:
   module: moviemode
   class: MovieMode
-  switch: input_select.contexts
+  switch: input_select.context
 
 cozy:
   module: cozy
   class: Cozy
-  switch: input_select.contexts
+  switch: input_select.context
 
 normal:
   module: normal
   class: Normal
-  switch: input_select.contexts
+  switch: input_select.context
 
 away:
   module: away
   class: Away
-  switch: input_select.contexts
+  switch: input_select.context
 
 pre-sleep:
   module: presleep
   class: PreSleep
-  switch: input_select.contexts
+  switch: input_select.context
 
 asleep:
   module: asleep
   class: Asleep
-  switch: input_select.contexts
+  switch: input_select.context
+
+carpe-mieke:
+  module: carpemieke
+  class: CarpeMieke
+  switch: input_select.context
 
 ###########
 # Sensors #

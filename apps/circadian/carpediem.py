@@ -20,7 +20,6 @@ class CarpeDiem(hass.Hass):
 
         # Register callback
         self.on_default = self.listen_state(self.carpe_diem, switch, new="on")
-        self.on_mieke = self.listen_state(self.carpe_mieke, "input_boolean.carpemieke", new="on")
 
         #Reset the switch at 20:00 each day
         self.time = datetime.time(20, 0, 0)
@@ -32,7 +31,7 @@ class CarpeDiem(hass.Hass):
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
         if self.get_state("device_tracker.iphonevanmieke") == "home":
-            self.turn_on("input_boolean.carpemieke")
+            self.turn_on("input_select.carpemieke")
             return
 
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
@@ -68,43 +67,6 @@ class CarpeDiem(hass.Hass):
                 duration = light_duration * self.modulator
 
         self.run_in(self.finished, duration + 10)
-
-    def carpe_mieke(self, entity, attribute, old, new, kwargs):
-        self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
-        self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
-        self.log("Starting carpe-Mieke")
-
-        g.c_colortemp = 2000
-        g.c_brightness = 655
-        g.persistent_hallway_light = True
-
-        """ A list of lists containing:
-        Entity id, delay, fade duration
-        """
-
-        lights = [
-            ["light.monitor", 1, 30],
-            ["light.bathroom_2", 1, 20],
-            ["light.reol_2", 60, 180],
-            ["light.loft_2", 210, 300],
-            ["light.gang", 60, 300],
-        ]
-
-        duration = 0  * self.modulator
-
-        for light in lights:
-            self.run_in(self.light_controller,
-                        light[1] * self.modulator,
-                        lt=light[0],
-                        fade=light[2],
-                        switch="input_boolean.carpemieke")
-
-            light_duration = light[1] + light[2]
-
-            if light_duration > duration:
-                duration = light_duration * self.modulator
-
-        self.run_in(self.finished, duration)
 
     def light_controller(self, kwargs):
         if "switch" in kwargs:
