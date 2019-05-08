@@ -63,11 +63,13 @@ pre-sleep:
   module: presleep
   class: PreSleep
   switch: input_select.context
+  dependencies: Utilities
 
 asleep:
   module: asleep
   class: Asleep
   switch: input_select.context
+  dependencies: Utilities
 
 carpe-mieke:
   module: carpemieke
