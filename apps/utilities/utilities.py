@@ -17,7 +17,7 @@ class Utilities(hass.Hass):
     def setstate(self, lt, brightness="", fade="", color=""):
         self.modulator = 1
 
-        self.log("Set " + lt + " to fade in " + str(fade * self.modulator) + "s")
+        self.log("Set " + lt + " to fade to " + brightness + " over " + str(fade * self.modulator) + "s")
 
         if color != "":
             self.turn_on(lt, brightness = brightness, transition = self.modulator * fade, xy_color = color)
