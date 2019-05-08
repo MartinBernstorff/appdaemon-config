@@ -16,6 +16,8 @@ class PreSleep(hass.Hass):
 
         self.listen_state(self.on, "input_select.context", new = "Pre-sleep")
 
+        self.Utils = self.get_app("Utilities")
+
     def on(self, entity, attribute, old, new, kwargs):
         self.log("Running pre-sleep actions")
         lights = ["gang",
@@ -24,5 +26,7 @@ class PreSleep(hass.Hass):
         for light in lights:
             self.turn_off("light.{}".format(light))
 
-        self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "1")
-        self.turn_on("light.monitor", xy_color = [0.6948, 0.3002], brightness = "60")
+        self.turn_off("group.all_switches")
+
+        self.Utils.setstate("light.bathroom_2", brightness = 1, color = [0.6948, 0.3002], fade = 5)
+        self.Utils.setstate("light.monitor", brightness = 60, color = [0.6948, 0.3002], fade = 5)
