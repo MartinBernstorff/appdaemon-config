@@ -23,14 +23,19 @@ class ByBed(hass.Hass):
     def single_click(self, entity, attribute, old, new="", kwargs=""):
         # Define context-specific actions
         # Double-click is moving forward in circadian contexts
+
         self.log("Single-click!")
         self.log("Context is {}, moving forward".format(self.get_state("input_select.context")))
         if self.get_state("input_select.context") == "Normal":
             self.set_state("input_select.context", state="Pre-sleep")
         elif self.get_state("input_select.context") == "Pre-sleep":
             self.set_state("input_select.context", state="Asleep")
+        elif self.get_state("input_select.context") == "Cozy":
+            self.set_state("input_select.context", state="Pre-sleep")
         elif self.get_state("input_select.context") == "Asleep":
             self.turn_on("input_boolean.carpediem")
+        else:
+            self.set_state("input_select.context", state="Normal")
         self.log("New context is {}".format(self.get_state("input_select.context")))
 
     def double_click(self, entity, attribute, old, new="", kwargs=""):
