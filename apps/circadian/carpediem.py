@@ -31,7 +31,7 @@ class CarpeDiem(hass.Hass):
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
         if self.get_state("device_tracker.iphonevanmieke") == "home":
-            self.turn_on("input_select.carpemieke")
+            self.turn_on("input_boolean.carpemieke")
             return
 
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
