@@ -23,3 +23,9 @@ class Utilities(hass.Hass):
             self.turn_on(lt, brightness = brightness, transition = self.modulator * fade, xy_color = color)
         else:
             self.turn_on(lt, brightness = brightness, transition = self.modulator * fade)
+
+        if brightness == 0:
+            if fade != "":
+                self.run_in(self.turn_off(lt), fade)
+            else:
+                self.turn_off(lt)
