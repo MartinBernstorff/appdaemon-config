@@ -44,7 +44,7 @@ class CarpeMieke(hass.Hass):
         lights = [
             ["light.monitor", 2, 30],
             ["light.bathroom_2", 2, 20],
-            ["light.reol_2", 60, 180],
+            ["light.reol_2", 2, 240],
             ["light.loft_2", 210, 300],
             ["light.gang", 60, 300],
         ]
