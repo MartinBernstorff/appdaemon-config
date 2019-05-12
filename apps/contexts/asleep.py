@@ -25,8 +25,8 @@ class Asleep(hass.Hass):
 
     def on(self, entity, attribute, old, new, kwargs):
         self.log("Starting good-night script")
-        self.Utils.setstate("light.monitor", fade = 5, brightness = 0)
-        self.Utils.setstate("light.bathroom_2", fade = 5, brightness = 0)
+        self.Utils.setstate("light.monitor", fade = 10, brightness = 0)
+        self.Utils.setstate("light.bathroom_2", fade = 10, brightness = 0)
         time.sleep(5)
         self.turn_off("group.all_lights")
         self.turn_off("media_player.pioneer")
