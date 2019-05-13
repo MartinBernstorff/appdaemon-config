@@ -17,7 +17,7 @@ class CarpeMieke(hass.Hass):
 
         self.listen_state(self.on_from_boolean, "input_boolean.carpemieke", new = "on")
 
-        self.utils = self.get_app("utilities")
+        self.Utils = self.get_app("utilities")
 
         self.modulator = 1
 
@@ -69,20 +69,8 @@ class CarpeMieke(hass.Hass):
         else:
             switch = self.args["switch"]
 
-        self.setstate(lt=kwargs["lt"],
-                      brightness=g.c_brightness,
-                      fade=kwargs["fade"],
-                      color=g.c_colortemp,
-                      switch=switch)
-
-    def setstate(self, lt, brightness, fade, switch, color=""):
-        if self.get_state(switch) == "on":
-            self.log("Set " + lt + " to fade in over " + str(fade * self.modulator) + "s with \n     Brightness: {}\n     Kelvin: {}".format(brightness, color))
-
-            if self.get_state(switch) == "on":
-                if color != "":
-                    self.turn_on(lt, brightness=brightness, transition=self.modulator * fade, kelvin=color)
-                else:
-                    self.turn_on(lt, brightness=brightness, transition=self.modulator * fade)
-        else:
-            self.log("Switch turned off, terminating")
+        self.Utils.setstate(lt=kwargs["lt"],
+                            brightness=g.c_brightness,
+                            fade=kwargs["fade"],
+                            color=g.c_colortemp,
+                            switch=switch)
