@@ -17,7 +17,7 @@ class CarpeMieke(hass.Hass):
 
         self.listen_state(self.on_from_boolean, "input_boolean.carpemieke", new = "on")
 
-        self.Utils = self.get_app("utilities")
+        self.Utils = self.get_app("Utilities")
 
         self.modulator = 1
 
