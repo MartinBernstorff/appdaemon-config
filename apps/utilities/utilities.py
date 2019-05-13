@@ -14,8 +14,13 @@ class Utilities(hass.Hass):
     def initialize(self):
         self.log("Initializing {}".format(__name__))
 
-    def setstate(self, lt, brightness="", fade="", color=""):
+    def setstate(self, lt, brightness="", fade="", color="", switch=None):
         self.modulator = 1
+
+        if switch != None:
+            if self.get_state(switch) == "off":
+                self.log("Switch turned off, exiting")
+                return
 
         self.log("Set " + lt + " to fade to " + str(brightness) + " and color {}".format(str(color)) + "\n over " + str(fade * self.modulator) + "s")
 
