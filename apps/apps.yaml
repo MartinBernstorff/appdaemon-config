@@ -75,6 +75,7 @@ carpe-mieke:
   module: carpemieke
   class: CarpeMieke
   switch: input_select.context
+  dependencies: Utilities
 
 ###########
 # Sensors #
