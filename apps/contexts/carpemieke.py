@@ -58,11 +58,6 @@ class CarpeMieke(hass.Hass):
                         fade=light[2],
                         switch="input_boolean.carpemieke")
 
-            light_duration = light[1] + light[2]
-
-            if light_duration > duration:
-                duration = light_duration * self.modulator
-
         self.set_state("input_select.context", state = "Carpe Mieke")
 
         self.reset()
@@ -89,8 +84,5 @@ class CarpeMieke(hass.Hass):
                     self.turn_on(lt, brightness=brightness, transition=self.modulator * fade, kelvin=color)
                 else:
                     self.turn_on(lt, brightness=brightness, transition=self.modulator * fade)
-
-            if self.get_state(switch) == "on":
-                time.sleep(self.modulator * fade)
         else:
             self.log("Switch turned off, terminating")

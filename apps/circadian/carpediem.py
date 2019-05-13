@@ -89,9 +89,6 @@ class CarpeDiem(hass.Hass):
                     self.turn_on(lt, brightness=brightness, transition=self.modulator * fade, kelvin=color)
                 else:
                     self.turn_on(lt, brightness=brightness, transition=self.modulator * fade)
-
-            if self.get_state(switch) == "on":
-                time.sleep(self.modulator * fade)
         else:
             self.log("Switch turned off, terminating")
 
