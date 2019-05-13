@@ -35,23 +35,24 @@ class Cozy(hass.Hass):
         n = 0
 
         for i in range(0, 10):
-            if self.get_state("media_player.pioneer") == "on":
-                if n < 2:
-                    self.call_service("media_player/volume_set",
-                                      entity_id = "media_player.pioneer",
-                                      volume_level = "0.32")
-                    sleep(1)
+            if self.get_state("input_select.context") == "Cozy":
+                if self.get_state("media_player.pioneer") == "on":
+                    if n < 2:
+                        self.call_service("media_player/volume_set",
+                                          entity_id = "media_player.pioneer",
+                                          volume_level = "0.32")
+                        sleep(1)
+                        self.call_service("media_player/select_source",
+                                          entity_id = "media_player.pioneer",
+                                          source = "CHROME")
+                        sleep(1)
+                        n += 1
+                else:
                     self.call_service("media_player/select_source",
                                       entity_id = "media_player.pioneer",
                                       source = "CHROME")
-                    sleep(1)
-                    n += 1
-            else:
-                self.call_service("media_player/select_source",
-                                  entity_id = "media_player.pioneer",
-                                  source = "CHROME")
-                self.log("Pioneer not on, re-powering and sleeping for 3s")
-                sleep(3)
+                    self.log("Pioneer not on, re-powering and sleeping for 3s")
+                    sleep(3)
 
     def leaving(self, entity, attribute, old, new, kwargs):
         self.turn_off("media_player.pioneer")
