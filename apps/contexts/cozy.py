@@ -19,14 +19,25 @@ class Cozy(hass.Hass):
         self.listen_state(self.on, "input_select.context", new = "Cozy")
         self.listen_state(self.leaving, "input_select.context", old = "Cozy")
 
+        self.Utils = self.get_app("Utilities")
+
     def on(self, entity, attribute, old, new, kwargs):
-        self.turn_off("light.loft_2")
-        self.turn_off("light.reol_2")
         self.turn_on("switch.vindue")
         self.turn_on("switch.seng")
         g.c_colortemp = 2300
-        self.setstate("light.gang", 1, 1, g.c_colortemp)
-        self.setstate("light.monitor", 125, 1, g.c_colortemp)
+
+        lights = [
+            ["light.loft_2", 1],
+            ["light.reol_2", 5],
+            ["light.gang", 5],
+            ["light.bathroom_2", 10]
+        ]
+
+        for light in lights:
+            self.Utils.light_setter(light[0], brightness = 0, fade = light[1])
+
+        self.Utils.light_setter("light.monitor", brightness=125, fade=10)
+
         self.turn_off("input_boolean.circadian")
         self.turn_on("media_player.pioneer")
 
@@ -54,19 +65,9 @@ class Cozy(hass.Hass):
                     self.log("Pioneer not on, re-powering and sleeping for 3s")
                     sleep(3)
 
+        self.log("Finished init of cozy")
+
     def leaving(self, entity, attribute, old, new, kwargs):
         self.turn_off("media_player.pioneer")
         self.turn_off("switch.vindue")
         self.turn_off("switch.seng")
-
-    def setstate(self, lt, bness, fade, color=""):
-        self.modulator = 1
-
-        self.log("Set " + lt + " to fade in " + str(fade * self.modulator) + "s with parameters {} {}".format(bness, color))
-
-        if color != "":
-            self.turn_on(lt, brightness = bness, transition = self.modulator * fade, kelvin = color)
-        else:
-            self.turn_on(lt, brightness = bness, transition = self.modulator * fade)
-
-# Random feature test

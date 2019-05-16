@@ -25,14 +25,28 @@ class Asleep(hass.Hass):
 
     def on(self, entity, attribute, old, new, kwargs):
         self.log("Starting good-night script")
-        self.Utils.setstate("light.monitor", fade = 10, brightness = 0)
-        self.Utils.setstate("light.bathroom_2", fade = 10, brightness = 0)
-        time.sleep(5)
-        self.turn_off("group.all_lights")
+
+        self.Utils.light_setter("light.monitor", fade = 10, brightness = 0)
+        self.Utils.light_setter("light.bathroom_2", fade = 10, brightness = 0)
+
         self.turn_off("media_player.pioneer")
         self.turn_off("input_boolean.circadian")
         self.turn_off("input_boolean.sunrise")
         self.turn_off("input_boolean.carpediem")
-        time.sleep(2)
+
+        for i in range(0, 6):
+            if self.get_state("light.monitor") == "on":
+                self.log("Monitor is on, sleeping for 2s")
+                time.sleep(2)
+            else:
+                self.log("Monitor turned off, continuing")
+
         self.turn_off("group.all_lights")
+
+        for i in range(0, 5):
+            if self.get_state("group.all_lights") == "on":
+                self.log("All lights not yet off, repeating")
+                self.turn_off("group.all_lights")
+                time.sleep(2)
+
         self.log("Finished good-night script, good night!")

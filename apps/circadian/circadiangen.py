@@ -87,6 +87,7 @@ class CircadianGen(hass.Hass):
         position = (self.now-starttime).seconds
 
         g.c_brightness = (start + (end - start) * position / fadelength) * base
+        self.log("g.c_brightness: {}".format(g.c_brightness))
 
         # self.log("\nstartbness: {}\nendbness: {}\nFadelength: {}\nPosition: {}\ng.c_brightness: {}".format(startbness, endbness, fadelength, position, g.c_brightness))
 
@@ -139,6 +140,8 @@ class CircadianGen(hass.Hass):
         self.colortemp = starttemp + (endtemp - starttemp) * position / fadelength
 
         g.c_colortemp = self.colortemp
+
+        self.log("g.c_colortemp: {}".format(g.c_colortemp))
 
         # self.log("\nStarttemp: {}\nEndtemp: {}\nFadelength: {}\nPosition: {}\ng.c_colortemp: {}".format(starttemp, endtemp, fadelength, position, g.c_colortemp))
 

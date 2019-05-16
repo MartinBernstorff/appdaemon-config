@@ -21,6 +21,8 @@ class TopHallway(hass.Hass):
         self.listen_event(self.double_click, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a24c", click_type = "double")
         self.listen_event(self.long_click_press, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a24c", click_type = "long_click_press")
 
+        self.Utils = self.get_app("Utilities")
+
     def single_click(self, entity, attribute, old, new="", kwargs=""):
         if self.get_state("input_select.context") != "Away":
             self.set_state("input_select.context", state = "Away")
@@ -38,21 +40,9 @@ class TopHallway(hass.Hass):
             self.set_state("input_select.context", state="Normal")
             self.setstate(lt="light.gang",
                           brightness=655,
-                          fade=1,
-                          color=9000)
+                          fade=1)
         else:
             if self.get_state("light.gang") == "on":
                 self.turn_off("light.gang")
             else:
-                self.setstate(lt="light.gang",
-                              brightness=g.c_brightness,
-                              fade=1,
-                              color=g.c_colortemp)
-
-    def setstate(self, lt, brightness, fade, color=""):
-        self.log("Set " + lt + " to fade in over " + str(fade) + "s with \n     Brightness: {}\n     Kelvin: {}".format(brightness, color))
-
-        if color != "":
-            self.turn_on(lt, brightness=brightness, transition=fade, kelvin=color)
-        else:
-            self.turn_on(lt, brightness=brightness, transition=fade)
+                self.setstate(lt="light.gang", fade=1)

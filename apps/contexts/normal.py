@@ -17,26 +17,34 @@ class Normal(hass.Hass):
 
         self.listen_state(self.on, "input_select.context", new = "Normal")
 
-    def on(self, entity, attribute, old, new, kwargs):
-        self.log("New context is Normal, turning on lights")
-
-        self.turn_on("input_boolean.circadian")
-
-        self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
-
-        lights = ["light.loft_2",
+        self.lights = ["light.monitor",
                   "light.reol_2",
-                  "light.monitor"
+                  "light.loft_2"
                   ]
 
-        for light in lights:
-            self.turn_on(light,
-                         transition = 1,
-                         kelvin = g.c_colortemp,
-                         brightness = g.c_brightness)
-            time.sleep(0.2)
+        self.circadian_gen = self.get_app("circadian_gen")
 
-        self.turn_off("input_boolean.circadian")
-        time.sleep(1)
+        self.Utils = self.get_app("Utilities")
+
+    def on(self, entity, attribute, old, new, kwargs):
+        self.log("New context is Normal, turning on lights")
+        self.circadian_gen.gen_c_brightness()
+        self.circadian_gen.gen_c_colortemp()
+
+        self.log("Proceeding to light adjustments")
+        if old == "Cozy":
+            self.log("Updating lights slowly from Cozy,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
+
+            for light in self.lights:
+                self.Utils.light_setter(light, fade = 60)
+                time.sleep(10)
+            self.log("Finished light transition to Normal from Cozy")
+        else:
+            self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
+
+            for light in self.lights:
+                self.Utils.light_setter(light, fade = 1)
+                time.sleep(0.2)
+            self.log("Finished transition to Normal")
+
         self.turn_on("input_boolean.circadian")
-        self.log("Finished transitioning to normal")

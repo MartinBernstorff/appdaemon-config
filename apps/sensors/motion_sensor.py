@@ -38,12 +38,14 @@ class MotionSensor(hass.Hass):
         if new == "on":
             self.disabled_contexts = ["Pre-sleep", "Asleep", "Away"]
             self.context = self.get_state("input_select.context")
-            self.log("Motion sensor activated with context {}".format(self.context))
 
             if self.context in self.disabled_contexts:
                 self.log("Motion sensor disabled in context {}".format(self.context))
+                return
+            else:
+                self.log("Motion sensor activated with context {}".format(self.context))
 
-            elif self.context == "Cozy":
+            if self.context == "Cozy":
                 self.turn_on("light.gang", transition = 1, kelvin = 2000,
                              brightness = 80)
 

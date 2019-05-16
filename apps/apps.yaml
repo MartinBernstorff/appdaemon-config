@@ -48,11 +48,13 @@ cozy:
   module: cozy
   class: Cozy
   switch: input_select.context
+  dependencies: Utilities
 
 normal:
   module: normal
   class: Normal
   switch: input_select.context
+  dependencies: circadian_gen
 
 away:
   module: away
@@ -104,6 +106,7 @@ by_bed:
 top_hallway:
   module: top_hallway
   class: TopHallway
+  dependencies: Utilities
 
 ###############
 # Off scripts #

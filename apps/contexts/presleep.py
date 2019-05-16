@@ -28,5 +28,5 @@ class PreSleep(hass.Hass):
 
         self.turn_off("group.all_switches")
 
-        self.Utils.setstate("light.bathroom_2", brightness = 1, color = [0.6948, 0.3002], fade = 10)
-        self.Utils.setstate("light.monitor", brightness = 60, color = [0.6948, 0.3002], fade = 10)
+        self.Utils.light_setter("light.bathroom_2", brightness = 1, xy_color = [0.6948, 0.3002], fade = 10)
+        self.Utils.light_setter("light.monitor", brightness = 60, xy_color = [0.6948, 0.3002], fade = 10)

@@ -55,7 +55,7 @@ class CarpeMieke(hass.Hass):
 
         for light in lights:
             time.sleep(1)
-            self.run_in(self.Utils.setstate,
+            self.run_in(self.Utils.scheduled_light_setter,
                         light[1] * self.modulator,
                         lt=light[0],
                         fade=light[2],
