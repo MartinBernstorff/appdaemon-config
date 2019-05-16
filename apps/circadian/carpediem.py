@@ -27,7 +27,7 @@ class CarpeDiem(hass.Hass):
 
         self.modulator = 1
 
-        self.utils = self.get_app("Utilities")
+        self.Utils = self.get_app("Utilities")
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
         if self.get_state("device_tracker.iphonevanmieke") == "home":
@@ -56,54 +56,29 @@ class CarpeDiem(hass.Hass):
         duration = 0
 
         for light in lights:
-            self.run_in(self.light_controller,
+            self.run_in(self.Utils.scheduled_light_setter,
                         light[1] * self.modulator,
                         lt=light[0],
-                        fade=light[2])
+                        fade=light[2],
+                        switch="input_boolean.carpediem",
+                        kelvin=g.c_colortemp)
 
-            light_duration = (light[1] + light[2]) * self.modulator
+            if light[1] + light[2] > duration:
+                duration = light[1] + light[2]
 
-            if light_duration > duration:
-                duration = light_duration * self.modulator
+        time.sleep(duration + 5)
 
-        self.run_in(self.finished, duration + 10)
-
-    def light_controller(self, kwargs):
-        if "switch" in kwargs:
-            switch = kwargs["switch"]
-        else:
-            switch = self.args["switch"]
-
-        self.setstate(lt=kwargs["lt"],
-                      brightness=g.c_brightness,
-                      fade=kwargs["fade"],
-                      color=g.c_colortemp,
-                      switch=switch)
-
-    def setstate(self, lt, brightness, fade, switch, color=""):
-        if self.get_state(switch) == "on":
-            self.log("Set " + lt + " to fade in over " + str(fade * self.modulator) + "s with \n     Brightness: {}\n     Kelvin: {}".format(brightness, color))
-
-            if self.get_state(switch) == "on":
-                if color != "":
-                    self.turn_on(lt, brightness=brightness, transition=self.modulator * fade, kelvin=color)
-                else:
-                    self.turn_on(lt, brightness=brightness, transition=self.modulator * fade)
-        else:
-            self.log("Switch turned off, terminating")
+        self.finished()
 
     def reset(self, entity="", attribute="", old="", new="", kwargs=""):
         self.turn_off(self.args["switch"])
         self.turn_off("input_boolean.carpemieke")
 
     def finished(self, entity="", attribute="", old="", new="", kwargs=""):
-        if self.get_state(self.args["switch"]) == "on" or self.get_state("input_boolean.carpemieke") == "on": # Check if scripts have been cancelled
-            if self.get_state("device_tracker.iphonevanmieke") == "home":
-                pass
-            else:
-                self.turn_on("input_boolean.circadian") #Turn back on circadian
-                time.sleep(2)
-                self.set_state("input_select.context", state = "Normal")
+        if self.get_state(self.args["switch"]) == "on": # Check if scripts have been cancelled
+            self.turn_on("input_boolean.circadian") #Turn back on circadian
+            time.sleep(2)
+            self.set_state("input_select.context", state = "Normal")
             self.reset()
         else:
             self.log("Switch is off, not running finished")

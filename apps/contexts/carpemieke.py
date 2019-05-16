@@ -28,14 +28,16 @@ class CarpeMieke(hass.Hass):
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
 
         g.c_colortemp = 2000
-        g.c_brightness = 655
+        g.c_brightness = 200
         g.persistent_hallway_light = True
 
     def reset(self, entity="", attribute="", old="", new="", kwargs=""):
-        self.turn_off(self.args["switch"])
+        self.turn_off("input_boolean.carpemieke")
 
     def on_from_boolean(self, entity, attribute, old, new, kwargs):
+        self.log("Starting from boolean")
         self.on()
+        time.sleep(1)
 
         """ A list of lists containing:
         Entity id, delay, fade duration
@@ -52,25 +54,19 @@ class CarpeMieke(hass.Hass):
         duration = 0  * self.modulator
 
         for light in lights:
-            self.run_in(self.light_controller,
+            time.sleep(1)
+            self.run_in(self.Utils.setstate,
                         light[1] * self.modulator,
                         lt=light[0],
                         fade=light[2],
-                        switch="input_boolean.carpemieke")
+                        switch="input_boolean.carpemieke",
+                        kelvin=g.c_colortemp)
+
+            if light[1] + light[2] > duration:
+                duration = light[1] + light[2]
 
         self.set_state("input_select.context", state = "Carpe Mieke")
 
+        time.sleep(duration + 5)
         self.reset()
         self.log("Finished carpe mieke!")
-
-    def light_controller(self, kwargs):
-        if "switch" in kwargs:
-            switch = kwargs["switch"]
-        else:
-            switch = self.args["switch"]
-
-        self.Utils.setstate(lt=kwargs["lt"],
-                            brightness=g.c_brightness,
-                            fade=kwargs["fade"],
-                            color=g.c_colortemp,
-                            switch=switch)
