@@ -55,6 +55,8 @@ class ByBed(hass.Hass):
             elif self.get_state("input_boolean.carpediem") == "on":
                 self.turn_off("input_boolean.carpediem")
                 self.turn_on("input_boolean.good_night")
+            elif self.get_state("light.monitor") == "on":
+                self.turn_off("group.all_lights")
         else:
             self.set_state("input_select.context", state="Normal")
         self.log("New context is {}".format(self.get_state("input_select.context")))

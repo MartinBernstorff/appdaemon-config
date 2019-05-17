@@ -3,6 +3,7 @@ import circadiangen
 import time
 import datetime
 import globals as g
+import random
 
 #
 # Carpediem app
@@ -21,6 +22,7 @@ class Utilities(hass.Hass):
         self.light_setter(**kwargs)
 
     def light_setter(self, lt, brightness=None, fade=None, xy_color=None, switch=None, kelvin=None, **kwargs):
+        time.sleep(random.uniform(0, 0.2))
         if self.verbose == 1:
             self.log("Parameters parsed:\n    lt: {}\n    brightness: {}\n    fade: {}\n    xy_color: {}\n    switch {}\n    kelvin: {}".format(lt, brightness, fade, xy_color, switch, kelvin))
 
@@ -34,6 +36,8 @@ class Utilities(hass.Hass):
 
         if brightness == 0:
             if fade != None:
+                if self.get_state(lt) == "off":
+                    return
                 self.run_in(self.scheduled_turn_off, fade, entity_id=lt)
                 self.log("Turning {} off after {}".format(lt, fade))
                 if xy_color != None:
@@ -52,9 +56,10 @@ class Utilities(hass.Hass):
                 self.turn_on(lt, transition = fade, kelvin = kelvin, brightness = brightness)
                 self.log("Set " + lt + " to fade to " + str(brightness) + " and kelvin {}".format(str(kelvin)) + "\n over " + str(fade) + "s")
             else:
-                self.turn_on(lt, brightness = brightness, transition = fade)
+                self.turn_on(lt, brightness = brightness, transition = fade, kelvin = g.c_colortemp)
 
 
 
     def scheduled_turn_off(self, kwargs):
+        time.sleep(random.uniform(0, 0.2))
         self.turn_off(**kwargs)
