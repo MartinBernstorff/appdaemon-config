@@ -35,6 +35,8 @@ class Away(hass.Hass):
         if self.get_state("input_select.context") == "Away":
             self.turn_off("input_boolean.sunrise")
             self.turn_off("input_boolean.carpediem")
+            time.sleep(1)
+            self.turn_off("group.all_lights")
             self.log("Phase 2 complete")
 
         self.log("Away script execution finished!")
