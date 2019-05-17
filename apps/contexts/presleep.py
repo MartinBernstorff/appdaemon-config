@@ -20,11 +20,13 @@ class PreSleep(hass.Hass):
 
     def on(self, entity, attribute, old, new, kwargs):
         self.log("Running pre-sleep actions")
-        lights = ["gang",
-                  "reol_2",
-                  "loft_2"]
+        lights = ["light.loft_2",
+                  "light.gang",
+                  "light.reol_2"
+                  ]
         for light in lights:
-            self.turn_off("light.{}".format(light))
+            self.Utils.light_setter(light, fade = 2, brightness = 0)
+            time.sleep(1)
 
         self.turn_off("group.all_switches")
 

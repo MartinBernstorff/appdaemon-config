@@ -38,6 +38,7 @@ class Normal(hass.Hass):
             for light in self.lights:
                 self.Utils.light_setter(light, fade = 60)
                 time.sleep(10)
+
             self.log("Finished light transition to Normal from Cozy")
         else:
             self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
@@ -45,6 +46,7 @@ class Normal(hass.Hass):
             for light in self.lights:
                 self.Utils.light_setter(light, fade = 1)
                 time.sleep(0.2)
+
             self.log("Finished transition to Normal")
 
         self.turn_on("input_boolean.circadian")
