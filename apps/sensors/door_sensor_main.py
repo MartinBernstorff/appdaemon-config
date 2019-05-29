@@ -50,7 +50,7 @@ class DoorSensorMain(hass.Hass):
         else:
             self.log("Door was opened recently, not firing script again.")
 
-        delay = 60
+        delay = 20
         self.cancel_timer(self.handle)
         self.handle = self.run_in(self.delay_end, delay)
 
