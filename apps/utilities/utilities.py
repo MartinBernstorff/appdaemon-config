@@ -38,28 +38,27 @@ class Utilities(hass.Hass):
             if fade != None:
                 if self.get_state(lt) == "off":
                     return
-                self.run_in(self.scheduled_turn_off, fade, entity_id=lt)
+                self.run_in(self.scheduled_turn_off, fade+1, entity_id=lt)
                 self.log("Turning {} off after {}".format(lt, fade))
                 if xy_color != None:
-                    self.turn_on(lt, brightness = 1, transition = fade, xy_color = xy_color)
+                    self.turn_on(lt, transition = fade, xy_color = xy_color, brightness = 1)
                 elif kelvin != None:
                     self.turn_on(lt, transition = fade, kelvin = kelvin, brightness = 1)
                 else:
-                    self.turn_on(lt, brightness = 1, transition = fade)
+                    self.turn_on(lt, transition = fade, brightness = 1)
             else:
                 self.turn_off(lt)
                 self.log("Turning {} off now".format(lt))
         elif brightness > 0:
+            self.log("Set " + lt + " to fade to " + str(brightness))
             if xy_color != None:
-                self.turn_on(lt, brightness = brightness, transition = fade, xy_color = xy_color)
+                self.turn_on(lt, transition = fade, xy_color = xy_color, brightness = brightness)
             elif kelvin != None:
                 self.turn_on(lt, transition = fade, kelvin = kelvin, brightness = brightness)
-                self.log("Set " + lt + " to fade to " + str(brightness) + " and kelvin {}".format(str(kelvin)) + "\n over " + str(fade) + "s")
             else:
-                self.turn_on(lt, brightness = brightness, transition = fade, kelvin = g.c_colortemp)
-
-
+                self.turn_on(lt, transition = fade, kelvin = g.c_colortemp, brightness = brightness)
 
     def scheduled_turn_off(self, kwargs):
         time.sleep(random.uniform(0, 0.2))
         self.turn_off(**kwargs)
+        self.log("{} turned off on schedule".format(kwargs["entity_id"]))

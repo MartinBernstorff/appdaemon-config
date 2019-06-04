@@ -17,9 +17,10 @@ class Normal(hass.Hass):
 
         self.listen_state(self.on, "input_select.context", new = "Normal")
 
-        self.lights = ["light.monitor",
-                  "light.reol_2",
-                  "light.loft_2"
+        self.lights = ["light.gang",
+                "light.loft_2",
+                "light.reol_2",
+                "light.monitor"
                   ]
 
         self.circadian_gen = self.get_app("circadian_gen")
@@ -31,6 +32,8 @@ class Normal(hass.Hass):
         self.circadian_gen.gen_c_brightness()
         self.circadian_gen.gen_c_colortemp()
 
+        time.sleep(0.02)
+
         self.log("Proceeding to light adjustments")
         if old == "Cozy":
             self.log("Updating lights slowly from Cozy,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
@@ -38,13 +41,14 @@ class Normal(hass.Hass):
             for light in self.lights:
                 self.Utils.light_setter(light, fade = 60)
                 time.sleep(10)
+
             self.log("Finished light transition to Normal from Cozy")
         else:
             self.log("Updating lights quickly,\n    Color: {}\n    Brightness: {}".format(g.c_colortemp, g.c_brightness))
 
             for light in self.lights:
                 self.Utils.light_setter(light, fade = 1)
-                time.sleep(0.2)
+
             self.log("Finished transition to Normal")
 
         self.turn_on("input_boolean.circadian")

@@ -38,11 +38,11 @@ class TopHallway(hass.Hass):
         self.log("{} turned {}".format(entity, new))
         if g.c_colortemp == 2000 and g.c_brightness == 655 and g.persistent_hallway_light == True:
             self.set_state("input_select.context", state="Normal")
-            self.setstate(lt="light.gang",
+            self.Utils.light_setter(lt="light.gang",
                           brightness=655,
                           fade=1)
         else:
             if self.get_state("light.gang") == "on":
                 self.turn_off("light.gang")
             else:
-                self.setstate(lt="light.gang", fade=1)
+                self.Utils.light_setter(lt="light.gang", fade=1)
