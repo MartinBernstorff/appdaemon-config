@@ -32,7 +32,7 @@ class Normal(hass.Hass):
         self.circadian_gen.gen_c_brightness()
         self.circadian_gen.gen_c_colortemp()
 
-        time.sleep(0.02)
+        time.sleep(0.03)
 
         self.log("Proceeding to light adjustments")
         if old == "Cozy":
