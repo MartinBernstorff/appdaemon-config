@@ -30,12 +30,12 @@ class RightHallway(hass.Hass):
                 self.turn_off("light.bathroom_2")
         elif self.get_state("input_select.context") == "Pre-sleep":
             if self.get_state("light.bathroom_2") == "off":
-                self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "0")
+                self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "1")
             else:
                 self.turn_off("light.bathroom_2")
         elif self.get_state("input_select.context") == "Asleep":
             if self.get_state("light.bathroom_2") == "off":
-                self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "0")
+                self.turn_on("light.bathroom_2", xy_color = [0.6948, 0.3002], brightness = "1")
             else:
                 self.turn_off("light.bathroom_2")
         elif self.get_state("input_select.context") == "Cozy":
