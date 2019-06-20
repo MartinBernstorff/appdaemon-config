@@ -21,6 +21,8 @@ class CarpeDiem(hass.Hass):
         # Register callback
         self.on_default = self.listen_state(self.carpe_diem, switch, new="on")
 
+        self.listen_state(self.reset, "input_select.context") # If changing context, assume that carpe_diem was called in error
+
         #Reset the switch at 20:00 each day
         self.time = datetime.time(20, 0, 0)
         self.run_daily(self.reset, self.time)
