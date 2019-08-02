@@ -32,6 +32,8 @@ class Sunrise(hass.Hass):
         self.listen_state(self.set_alarm, "input_select.sunrise_minute")
         self.listen_state(self.set_alarm, "input_boolean.sunrise_alarm")
 
+        self.Utils = self.get_app("Utilities")
+
     def set_alarm(self, entity="", attribute="", old="", new="", kwargs=""):
         self.alarm = None
         if self.get_state("input_boolean.sunrise_alarm") == "on":
@@ -39,15 +41,24 @@ class Sunrise(hass.Hass):
             self.minute = self.get_state("input_select.sunrise_minute")# minute her
             self.alarm_time = self.parse_time("{}:{}:00".format(self.hour, self.minute))
 
-            self.alarm = self.run_daily(self.rise_default, self.alarm_time)
+            self.alarm = self.run_daily(self.launch, self.alarm_time)
             self.log("Set alarm to {}".format(self.info_timer(self.alarm)[0]))
+        elif self.get_state("input_boolean.sunrise_alarm") == "off":
+            self.cancel_timer(self.alarm)
+            self.log("Cancelled alarm timer")
+
+    def launch(self, entity="", attribute="", old="", new="", kwargs=""):
+        if self.get_state(self.args["switch"]) == "off":
+            self.turn_on(self.args["switch"])
+        else:
+            self.turn_off(self.args["switch"])
+            self.turn_on(self.args["switch"])
 
     def rise_default(self, entity="", attribute="", old="", new="", kwargs=""):
         self.modifier = 1
         self.log("Rise_default is running with switch {switch}, light {light} and modifier {modifier}".format(switch=self.switch, light=self.light, modifier = self.modifier))
-        # self.condseq_on(switch=self.switch, entity=self.light, brightness=1, t_fade=1, color=conv.rgb_to_xy(255, 0, 0))
-        self.condseq_on(switch=self.switch, entity=self.light, brightness=1, t_fade=10, color=3000)
-        self.condseq_on(switch=self.switch, entity=self.light, brightness=5, t_fade=1800, color=5000)
+        self.Utils.light_setter(switch=self.switch, lt=self.light, brightness=1, fade=10, kelvin=3000)
+        self.Utils.light_setter(switch=self.switch, lt=self.light, brightness=5, fade=1800, kelvin=5000)
 
     #######################
     # Different sequences #
