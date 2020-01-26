@@ -34,7 +34,7 @@ class Utilities(hass.Hass):
         if brightness == None:
             brightness = g.c_brightness
 
-        if brightness == 0:
+        if brightness <= 1:
             if fade != None:
                 if self.get_state(lt) == "off":
                     return
