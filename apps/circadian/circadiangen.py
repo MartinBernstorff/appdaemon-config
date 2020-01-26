@@ -48,7 +48,7 @@ class CircadianGen(hass.Hass):
             ["18:00:00", 2.5],
             ["20:00:00", 1.3],
             ["20:30:00", 0.5],
-            ["21:15:00", 0.08],
+            ["22:15:00", 0.02],
             ["23:59:59", 0.005]
         ]
 
@@ -65,7 +65,7 @@ class CircadianGen(hass.Hass):
             current_brightness = time[1]
 
             if self.i == 0:
-                self.log("First time, continuing")
+                pass
 
             elif self.now > self.previous_datetime and self.now <= current_datetime:
                 self.log("Brightness time is between {} and {}".format(self.previous_datetime, current_datetime))
@@ -97,8 +97,8 @@ class CircadianGen(hass.Hass):
         times = [
             ["00:00:00", 1000],
             ["05:01:00", 2000],
-            ["09:00:00", 5250],
-            ["16:30:00", 5250],
+            ["09:00:00", 5000],
+            ["16:30:00", 5000],
             ["18:00:00", 4500],
             ["20:00:00", 3000],
             ["20:30:00", 1000],
