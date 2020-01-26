@@ -19,7 +19,7 @@ class GoodNight(hass.Hass):
 
     def good_night(self, entity="", attribute="", old="", new="", kwargs=""):
         self.log("Starting good-night script")
-        self.turn_off("group.all_lights")
+        self.turn_off("light.all")
         self.turn_off("media_player.pioneer")
         self.turn_off("input_boolean.circadian")
         self.turn_off("input_boolean.sunrise")

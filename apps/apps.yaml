@@ -30,7 +30,7 @@ good_night:
   class: GoodNight
   switch: input_boolean.good_night
   devices:
-    - group.all_lights
+    - light.all
     - media_player.pioneer
     - input_boolean.circadian
     - input_boolean.sunrise
