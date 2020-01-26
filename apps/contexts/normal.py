@@ -20,7 +20,8 @@ class Normal(hass.Hass):
         self.lights = ["light.gang",
                 "light.loft_2",
                 "light.reol_2",
-                "light.monitor"
+                "light.monitor",
+                "light.arbejds"
                   ]
 
         self.circadian_gen = self.get_app("circadian_gen")
