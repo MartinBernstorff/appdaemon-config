@@ -50,9 +50,9 @@ class CarpeDiem(hass.Hass):
         lights = [
             ["light.monitor", 1, 10],
             ["light.bathroom_2", 1, 3],
-            ["light.reol_2", 20, 20],
-            ["light.loft_2", 45, 20],
-            ["light.gang", 5, 80],
+            ["light.reol_3", 20, 20],
+            ["light.loft_3", 45, 20],
+            ["light.gang_2", 5, 80],
         ]
 
         duration = 0

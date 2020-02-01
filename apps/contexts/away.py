@@ -28,7 +28,8 @@ class Away(hass.Hass):
         g.persistent_hallway_light = False
 
         if self.get_state("input_select.context") == "Away":
-            self.turn_off("light.all")
+            self.call_service("light/turn_off", entity_id = "all")
+            self.call_service("light/turn_off", entity_id = "all")
             self.turn_off("media_player.pioneer")
             self.log("Phase 1 complete")
 
@@ -36,7 +37,7 @@ class Away(hass.Hass):
             self.turn_off("input_boolean.sunrise")
             self.turn_off("input_boolean.carpediem")
             time.sleep(1)
-            self.turn_off("light.all")
+            self.call_service("light/turn_off", entity_id = "all")
             self.log("Phase 2 complete")
 
         self.log("Away script execution finished!")

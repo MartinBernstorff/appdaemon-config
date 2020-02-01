@@ -46,7 +46,7 @@ class DoorSensorMain(hass.Hass):
             if self.context == "Away":
                 self.log("Door sensor turning on with context {}".format(self.context))
                 self.set_state("input_select.context", state = "Normal")
-                self.turn_on("light.gang", transition = 0.5, kelvin = g.c_colortemp, brightness = 0.6 * g.c_brightness)
+                self.turn_on("light.gang_2", transition = 0.5, kelvin = g.c_colortemp, brightness = 0.6 * g.c_brightness)
         else:
             self.log("Door was opened recently, not firing script again.")
 

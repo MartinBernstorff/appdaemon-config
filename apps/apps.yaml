@@ -10,7 +10,9 @@ circadian_gen:
 circadian_setter:
   module: circadiansetter
   class: CircadianSetter
-  dependencies: circadian_gen
+  dependencies:
+    - Utilities
+    - circadian_gen
   constrain_input_boolean: input_boolean.circadian
 
 sunrise:
@@ -117,7 +119,7 @@ Reol_off:
   switch: input_boolean.circadian
   hour: 21
   minute: 05
-  entity: light.reol_2
+  entity: light.reol_3
 
 Loft_off:
   module: off_scheduler
@@ -125,7 +127,7 @@ Loft_off:
   switch: input_boolean.circadian
   hour: 21
   minute: 05
-  entity: light.loft_2
+  entity: light.loft_3
 
 Circadian_off:
   module: off_scheduler

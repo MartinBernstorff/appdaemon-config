@@ -42,12 +42,12 @@ class Asleep(hass.Hass):
                 self.log("Monitor turned off, continuing")
                 break
 
-        self.turn_off("light.all")
+        self.call_service("light/turn_off", entity_id = "all")
 
         for i in range(0, 5):
             if self.get_state("light.all") == "on":
                 self.log("All lights not yet off, repeating")
-                self.turn_off("light.all")
+                self.call_service("light/turn_off", entity_id = "all")
                 time.sleep(2)
 
         self.log("Finished good-night script, good night!")

@@ -6,4 +6,9 @@ appdaemon:
       ha_url: http://192.168.1.150:8123
       token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiI5MDc5Mjk4MDM1YmE0ODE5OTJlMDQ2ZWFlZTM1N2Q3YyIsImlhdCI6MTU0NjA3NzQxOSwiZXhwIjoxODYxNDM3NDE5fQ.QZIaGg013PYybzaUky9XQD8V54SZJKK5xxSiy0GsmKs
   time_zone: Europe/Copenhagen
+  latitude: 55.335394
+  longitude: 10.284252
+  elevation: 50
   utility_skew: 4
+http:
+    url: http://192.168.1.150:8124

@@ -13,10 +13,10 @@ class CircadianSetter(hass.Hass):
     # List of lights with entity_id, brightness coefficient
     lights = [["light.monitor", 1.8],
               ["light.bathroom_2", 1.4],
-              ["light.reol_2", 0.8],
-              ["light.loft_2", 0.6],
-              ["light.gang", 1],
-              ["light.arbejds", 0.38]]
+              ["light.reol_3", 0.8],
+              ["light.loft_3", 0.6],
+              ["light.gang_2", 1],
+              ["light.arbejds_2", 0.38]]
 
     def initialize(self):
         #Get current time and small time delta to initiate run_every

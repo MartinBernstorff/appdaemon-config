@@ -17,11 +17,11 @@ class Normal(hass.Hass):
 
         self.listen_state(self.on, "input_select.context", new = "Normal")
 
-        self.lights = ["light.gang",
-                "light.loft_2",
-                "light.reol_2",
+        self.lights = ["light.gang_2",
+                "light.loft_3",
+                "light.reol_3",
                 "light.monitor",
-                "light.arbejds"
+                "light.arbejds_2"
                   ]
 
         self.circadian_gen = self.get_app("circadian_gen")

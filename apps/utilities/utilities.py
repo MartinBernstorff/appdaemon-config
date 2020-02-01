@@ -34,7 +34,7 @@ class Utilities(hass.Hass):
         if brightness == None:
             brightness = g.c_brightness
 
-        if brightness <= 1:
+        if brightness == 0:
             if fade != None:
                 if self.get_state(lt) == "off":
                     return
@@ -50,7 +50,7 @@ class Utilities(hass.Hass):
                 self.turn_off(lt)
                 self.log("Turning {} off now".format(lt))
         elif brightness > 0:
-            self.log("Set " + lt + " to fade to " + str(brightness))
+            self.log("Set " + lt + " to fade to " + str(brightness) + " and colortemp " + str(kelvin))
             if xy_color != None:
                 self.turn_on(lt, transition = fade, xy_color = xy_color, brightness = brightness)
             elif kelvin != None:
@@ -60,5 +60,10 @@ class Utilities(hass.Hass):
 
     def scheduled_turn_off(self, kwargs):
         time.sleep(random.uniform(0, 0.2))
-        self.turn_off(**kwargs)
-        self.log("{} turned off on schedule".format(kwargs["entity_id"]))
+        self.turn_off(kwargs["entity_id"])
+        time.sleep(random.uniform(0, 0.2))
+        
+        if self.get_state(kwargs["entity_id"]) == "off":
+            self.log("{} turned off on schedule".format(kwargs["entity_id"]))
+        else:
+            self.log("ERROR: {} not turned off".format(kwargs["entity_id"]))
