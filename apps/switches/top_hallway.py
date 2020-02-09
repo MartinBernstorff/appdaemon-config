@@ -37,7 +37,7 @@ class TopHallway(hass.Hass):
     def long_click_press(self, entity, attribute, old, new="", kwargs=""):
         self.log("{} turned {}".format(entity, new))
         if g.c_colortemp == 2000 and g.c_brightness == 655 and g.persistent_hallway_light == True:
-            self.set_state("input_select.context", state="Normal")
+            self.set_state("input_select.context", state = "Normal")
             self.Utils.light_setter(lt="light.gang_2",
                           brightness=655,
                           fade=1)
