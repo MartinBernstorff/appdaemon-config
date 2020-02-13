@@ -16,7 +16,12 @@ class Utilities(hass.Hass):
     def initialize(self):
         self.log("Initializing {}".format(__name__))
 
-        self.verbose = 1
+        self.verbose = 0
+
+        self.ikea_lights = ["light.arbejds_2",
+                    "light.reol_3",
+                    "light.loft_3",
+                    "light.gang_2"]
 
     def scheduled_light_setter(self, kwargs):
         self.light_setter(**kwargs)
@@ -50,11 +55,21 @@ class Utilities(hass.Hass):
                 self.turn_off(lt)
                 self.log("Turning {} off now".format(lt))
         elif brightness > 0:
-            self.log("Set " + lt + " to fade to " + str(brightness) + " and colortemp " + str(kelvin))
             if xy_color != None:
                 self.turn_on(lt, transition = fade, xy_color = xy_color, brightness = brightness)
             elif kelvin != None:
-                self.turn_on(lt, transition = fade, brightness = brightness, kelvin = kelvin)
+                if lt in self.ikea_lights: # Since IKEA-lights no longer accept values outside of min/max mireds, set specifics
+                    if kelvin > 5000:
+                        kelvin = 5000
+                    elif kelvin < 1000:
+                        kelvin = 1000
+
+                    mireds = 250+(1-(kelvin-1000)/4000)*(454-250)
+                    self.turn_on(lt, transition = fade, brightness = brightness, color_temp = mireds)
+                    if verbose == 1:
+                        self.log("Setting {} as ikea_light with mireds {}".format(lt, mireds))
+                else:
+                    self.turn_on(lt, transition = fade, brightness = brightness, kelvin = kelvin)
             else:
                 self.turn_on(lt, transition = fade, brightness = brightness, kelvin = g.c_colortemp)
 
