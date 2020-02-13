@@ -54,11 +54,9 @@ class Utilities(hass.Hass):
             if xy_color != None:
                 self.turn_on(lt, transition = fade, xy_color = xy_color, brightness = brightness)
             elif kelvin != None:
-                self.turn_on(lt, transition = fade, brightness = brightness)
-                self.turn_on(lt, transition = fade, kelvin = kelvin)
+                self.turn_on(lt, transition = fade, brightness = brightness, kelvin = kelvin)
             else:
-                self.turn_on(lt, transition = fade, kelvin = g.c_colortemp)
-                self.turn_on(lt, transition = fade, brightness = brightness)
+                self.turn_on(lt, transition = fade, brightness = brightness, kelvin = g.c_colortemp)
 
     def scheduled_turn_off(self, kwargs):
         time.sleep(random.uniform(0, 0.2))

@@ -32,12 +32,15 @@ class CarpeDiem(hass.Hass):
         self.Utils = self.get_app("Utilities")
 
     def carpe_diem(self, entity, attribute, old, new, kwargs):
+        self.log("Running carpe_diem!")
         if self.get_state("device_tracker.iphonevanmieke") == "home":
             self.turn_on("input_boolean.carpemieke")
             return
 
         self.turn_off("input_boolean.circadian") #Turn off circadian temporarily
         self.turn_off("input_boolean.sunrise") #Turn off sunrise if it's stil on
+
+        time.sleep(1)
 
         g.c_colortemp = 4000
         g.c_brightness = 655
@@ -65,12 +68,9 @@ class CarpeDiem(hass.Hass):
                         switch="input_boolean.carpediem",
                         kelvin=g.c_colortemp)
 
-            if light[1] + light[2] > duration:
-                duration = light[1] + light[2]
+            duration = duration + light[1] * self.modulator + light[2]
 
-        time.sleep(duration + 5)
-
-        self.finished()
+        self.run_in(self.finished, duration + 5)
 
     def reset(self, entity="", attribute="", old="", new="", kwargs=""):
         self.turn_off(self.args["switch"])

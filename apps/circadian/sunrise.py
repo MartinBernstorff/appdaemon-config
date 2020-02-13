@@ -41,7 +41,8 @@ class Sunrise(hass.Hass):
             self.minute = self.get_state("input_select.sunrise_minute")# minute her
             self.alarm_time = self.parse_time("{}:{}:00".format(self.hour, self.minute))
 
-            self.alarm = self.run_daily(self.launch, self.alarm_time)
+            self.alarm = self.run_daily(self.launch, self.alarm_time,
+                                        constrain_days="mon,tue,wed,thu,fri")
             self.log("Set alarm to {}".format(self.info_timer(self.alarm)[0]))
         elif self.get_state("input_boolean.sunrise_alarm") == "off":
             self.cancel_timer(self.alarm)
@@ -112,3 +113,11 @@ class Sunrise(hass.Hass):
                             time.sleep(t_fade * self.modifier)
                             time.sleep(post_delay * self.modifier)
                 self.turn_on(entity)
+
+    """def test_blink(self, entity="", attribute="", old="", new="", kwargs=""):
+        self.turn_on("light.monitor", kelvin=1000)
+
+        for i in range(3):
+            time.sleep(1)
+            self.turn_on("light.monitor", flash = "short")
+            self.turn_off("light.monitor")"""
