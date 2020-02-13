@@ -20,6 +20,11 @@ sunrise:
   class: Sunrise
   switch: input_boolean.sunrise
 
+blink:
+  module: blink
+  class: Blink
+  switch: input_boolean.blink
+
 carpe_diem:
   module: carpediem
   class: CarpeDiem
