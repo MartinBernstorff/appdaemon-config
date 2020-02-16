@@ -16,6 +16,7 @@ class CircadianGen(hass.Hass):
         b = self.now + datetime.timedelta(seconds=3)
 
         self.utils = self.get_app("Utilities")
+        self.verbose = 0
 
         self.update_offset()
         self.gen_c_brightness()
@@ -68,7 +69,8 @@ class CircadianGen(hass.Hass):
                 pass
 
             elif self.now > self.previous_datetime and self.now <= current_datetime:
-                self.log("Brightness time is between {} and {}".format(self.previous_datetime, current_datetime))
+                if self.verbose == 1:
+                    self.log("Brightness time is between {} and {}".format(self.previous_datetime, current_datetime))
                 self.set_c_brightness(current_brightness, self.previous_brightness,
                                       current_datetime, self.previous_datetime)
             else:
@@ -87,7 +89,8 @@ class CircadianGen(hass.Hass):
         position = (self.now-starttime).seconds
 
         g.c_brightness = round((start + (end - start) * position / fadelength) * base)
-        self.log("g.c_brightness: {}".format(g.c_brightness))
+        if self.verbose == 1:
+            self.log("g.c_brightness: {}".format(g.c_brightness))
 
         # self.log("\nstartbness: {}\nendbness: {}\nFadelength: {}\nPosition: {}\ng.c_brightness: {}".format(startbness, endbness, fadelength, position, g.c_brightness))
 
@@ -121,7 +124,8 @@ class CircadianGen(hass.Hass):
                 self.log("First time, continuing")
 
             elif self.now > self.previous_colortemp_datetime and self.now <= current_datetime:
-                self.log("Colortemp time is between {} and {}".format(self.previous_colortemp_datetime, current_datetime))
+                if self.verbose == 1:
+                    self.log("Colortemp time is between {} and {}".format(self.previous_colortemp_datetime, current_datetime))
                 self.set_c_colortemp(current_colortemp, self.previous_colortemp,
                                       current_datetime, self.previous_colortemp_datetime)
             else:
@@ -141,7 +145,8 @@ class CircadianGen(hass.Hass):
 
         g.c_colortemp = round(self.colortemp)
 
-        self.log("g.c_colortemp: {}".format(g.c_colortemp))
+        if self.verbose == 1:
+            self.log("g.c_colortemp: {}".format(g.c_colortemp))
 
         # self.log("\nStarttemp: {}\nEndtemp: {}\nFadelength: {}\nPosition: {}\ng.c_colortemp: {}".format(starttemp, endtemp, fadelength, position, g.c_colortemp))
 
