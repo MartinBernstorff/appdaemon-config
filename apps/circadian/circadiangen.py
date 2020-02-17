@@ -120,7 +120,7 @@ class CircadianGen(hass.Hass):
                                                  "%d/%m/%Y %H:%M:%S") + g.c_offset
             current_colortemp = time[1]
 
-            if self.i == 0:
+            if self.i == 0 and self.verbose == 1:
                 self.log("First time, continuing")
 
             elif self.now > self.previous_colortemp_datetime and self.now <= current_datetime:
