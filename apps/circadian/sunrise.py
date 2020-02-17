@@ -59,7 +59,7 @@ class Sunrise(hass.Hass):
         self.modifier = 1
         self.log("Rise_default is running with switch {switch}, light {light} and modifier {modifier}".format(switch=self.switch, light=self.light, modifier = self.modifier))
         self.Utils.light_setter(switch=self.switch, lt=self.light, brightness=1, fade=10, kelvin=3000)
-        self.Utils.light_setter(switch=self.switch, lt=self.light, brightness=5, fade=1800, kelvin=5000)
+        self.Utils.light_setter(switch=self.switch, lt=self.light, brightness=255, fade=290, kelvin=5000)
 
     #######################
     # Different sequences #

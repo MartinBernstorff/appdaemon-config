@@ -109,7 +109,7 @@ class CircadianGen(hass.Hass):
         ]
 
         self.previous_colortemp_time_str = None
-        self.previous_colortemp_datetime = None
+        self.previous_colortemp_datetime = datetime.datetime.now()
         self.previous_colortemp = None
 
         self.i = 0
