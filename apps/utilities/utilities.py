@@ -66,7 +66,7 @@ class Utilities(hass.Hass):
 
                     mireds = 250+(1-(kelvin-1000)/4000)*(454-250)
                     self.turn_on(lt, transition = fade, brightness = brightness, color_temp = mireds)
-                    if verbose == 1:
+                    if self.verbose == 1:
                         self.log("Setting {} as ikea_light with mireds {}".format(lt, mireds))
                 else:
                     self.turn_on(lt, transition = fade, brightness = brightness, kelvin = kelvin)
