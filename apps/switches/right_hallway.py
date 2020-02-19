@@ -17,7 +17,7 @@ class RightHallway(hass.Hass):
     def initialize(self):
         self.log("SingleButton_A, at your service.")
         self.listen_event(self.single_click, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a251", click_type = "single")
-        self.listen_event(self.double_click, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a251", click_type = "double")
+        self.listen_event(self.single_click, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a251", click_type = "double")
         self.listen_event(self.long_click_press, "xiaomi_aqara.click", entity_id = "binary_sensor.switch_158d000201a251", click_type = "long_click_press")
 
     def single_click(self, entity, attribute, old, new="", kwargs=""):
@@ -48,9 +48,6 @@ class RightHallway(hass.Hass):
                 self.turn_off("light.bathroom_2")
             if self.get_state("light.bathroom_2") == "off":
                 self.turn_on("light.bathroom_2")
-
-    def double_click(self, entity, attribute, old, new="", kwargs=""):
-        self.log("Right-hallway double-clicked!")
 
     def long_click_press(self, entity, attribute, old, new="", kwargs=""):
         self.log("Right-hallway long_pressed!")
