@@ -62,7 +62,7 @@ class Blink(hass.Hass):
         self.turn_off("light.monitor")
 
         self.i = 0
-        for i in range(3):
+        for i in range(5):
             self.i += 5
             self.run_in(self.blink_light, self.i)
 
