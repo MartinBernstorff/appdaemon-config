@@ -30,6 +30,9 @@ class Blink(hass.Hass):
 
         #self.run_blink()
 
+        # Set alarm daily, or when settings have changed
+        runtime = datetime.time(19, 0, 0)
+        self.run_daily(self.set_alarm, runtime)
         self.listen_state(self.set_alarm, "input_select.blink_hour")
         self.listen_state(self.set_alarm, "input_select.blink_minute")
         self.listen_state(self.set_alarm, "input_boolean.blink_alarm")
@@ -65,8 +68,6 @@ class Blink(hass.Hass):
         for i in range(5):
             self.i += 5
             self.run_in(self.blink_light, self.i)
-
-        self.turn_off(self.args["switch"])
 
     def blink_light(self, entity="", attribute="", old="", new="", kwargs=""):
         self.log("Blinked!")
