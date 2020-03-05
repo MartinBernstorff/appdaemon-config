@@ -61,7 +61,7 @@ class Blink(hass.Hass):
             self.turn_on(self.args["switch"])
 
     def run_blink(self, entity="", attribute="", old="", new="", kwargs=""):
-        self.turn_on("light.monitor", kelvin=5000)
+        self.turn_on("light.monitor", kelvin=1000)
         self.turn_off("light.monitor")
 
         self.i = 0
@@ -69,7 +69,9 @@ class Blink(hass.Hass):
             self.i += 5
             self.run_in(self.blink_light, self.i)
 
+        self.turn_off(self.args["switch"])
+
     def blink_light(self, entity="", attribute="", old="", new="", kwargs=""):
         self.log("Blinked!")
-        self.turn_on("light.monitor", flash = "short", brightness = 2)
+        self.turn_on("light.monitor", flash = "short", brightness = 1)
         self.turn_off("light.monitor")
